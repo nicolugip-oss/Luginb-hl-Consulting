@@ -26,3 +26,5 @@ jobs:
           git add assets
           git commit -m "Add hero assets (scrub video, poster, ending frame)"
           git push
+
+# nudge: re-register workflow
