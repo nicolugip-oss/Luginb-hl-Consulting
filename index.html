@@ -6,12 +6,11 @@
 <title>Luginbühl Consulting · Prozessanalyse und Optimierung</title>
 <meta name="description" content="Luginbühl Consulting entwirrt gewachsene Abläufe in KMU und Teams: Prozessanalyse, Prozessoptimierung und dosierte Digitalisierung. Kostenloser Prozess-Check.">
 <meta name="theme-color" content="#0B111C">
-<!-- DEPLOY STEP: og:url und og:image beim Deploy mit der Live-URL ersetzen -->
 <meta property="og:title" content="Luginbühl Consulting · Vom Knoten zur klaren Linie">
 <meta property="og:description" content="Prozessanalyse und Optimierung für KMU und Teams. Klar, ehrlich, digital.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="PLACEHOLDER_URL">
-<meta property="og:image" content="PLACEHOLDER_URL/assets/hero-ending.jpg">
+<meta property="og:url" content="https://nicolugip-oss.github.io/Luginb-hl-Consulting/">
+<meta property="og:image" content="https://nicolugip-oss.github.io/Luginb-hl-Consulting/assets/hero-ending.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%230B111C'/%3E%3Cpath d='M17 7 C9 12 25 15 15 21 L15 36 Q15 39 18 39 L38 39' fill='none' stroke='%234FD4EA' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,6 +123,14 @@ nav.scrolled{border-bottom-color:var(--line);background:rgba(11,17,28,.82)}
 .ring-wrap{position:absolute;right:26px;bottom:26px;color:var(--accent);opacity:.85}
 .ring{display:block;width:34px;height:34px;transform:rotate(-90deg)}
 .ring circle{transition:stroke-dashoffset .2s linear}
+.scroll-cue{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;
+  transition:opacity .6s var(--ease);pointer-events:none}
+.scroll-cue.gone{opacity:0}
+.cue-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;color:var(--text-secondary);text-shadow:var(--tshadow)}
+.cue-line{width:1px;height:46px;background:linear-gradient(180deg,var(--accent),transparent);transform-origin:top;
+  animation:cueDrop 2.4s var(--ease) -0.6s infinite}
+@keyframes cueDrop{0%{transform:scaleY(0);opacity:0}35%{transform:scaleY(1);opacity:1}80%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+@media (max-height:560px){.scroll-cue{display:none}}
 .chevron{display:block;width:26px;height:26px;color:var(--text-secondary);animation:chevDrift 2.6s ease-in-out -1.2s infinite}
 @keyframes chevDrift{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(7px);opacity:1}}
 
@@ -132,6 +139,15 @@ nav.scrolled{border-bottom-color:var(--line);background:rgba(11,17,28,.82)}
 .band-left .inner{left:6vw;top:29vh}
 .band .kicker{font-family:var(--mono);font-size:.8rem;font-weight:500;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:18px}
 .band h1,.band .h{font-size:clamp(2.1rem,4.6vw,3.7rem);max-width:16ch}
+.band h1{font-size:clamp(2.6rem,6vw,4.7rem)}
+.band .hl{font-style:normal;color:var(--accent);text-shadow:0 0 26px rgba(79,212,234,.5),var(--tshadow)}
+.band .kicker .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);
+  margin-right:11px;vertical-align:1px;box-shadow:0 0 0 0 rgba(79,212,234,.55);animation:dotPulse 3.2s ease-out -0.8s infinite}
+@keyframes dotPulse{0%{box-shadow:0 0 0 0 rgba(79,212,234,.5)}70%{box-shadow:0 0 0 13px rgba(79,212,234,0)}100%{box-shadow:0 0 0 0 rgba(79,212,234,0)}}
+.band .rule{display:block;height:2px;width:min(300px,42vw);margin:26px 0 22px;transform-origin:left center;
+  transform:scaleX(var(--k,0));background:linear-gradient(90deg,var(--accent),rgba(79,212,234,.05))}
+.band .lead{font-size:clamp(1rem,1.5vw,1.22rem);color:var(--text-primary);max-width:34ch;
+  opacity:var(--k,0);transform:translateY(calc((1 - var(--k,0))*12px))}
 .band .h{font-family:var(--display);font-weight:700;line-height:1.12;letter-spacing:-.01em}
 .band::before{content:"";position:absolute;pointer-events:none;
   opacity:calc(.25 + .75*var(--k,1));
@@ -191,9 +207,9 @@ main{position:relative}
 .lede{margin-top:16px;color:var(--text-secondary);max-width:58ch}
 
 /* Seitenfaden (Signatur) */
-.thread-rail{position:absolute;top:0;bottom:0;left:calc(50% - 110px);width:220px;pointer-events:none;z-index:0}
+.thread-rail{position:absolute;top:0;bottom:0;left:calc(50% - 110px);width:220px;pointer-events:none;z-index:-1}
 .thread-rail svg{width:100%;height:100%}
-.thread-rail path{stroke:var(--accent);stroke-width:1.6;fill:none;opacity:.34;vector-effect:non-scaling-stroke}
+.thread-rail path{stroke:var(--accent);stroke-width:1.6;fill:none;opacity:.22;vector-effect:non-scaling-stroke}
 @media (max-width:1100px){.thread-rail{display:none}}
 
 /* Karten */
@@ -375,8 +391,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 
     <div class="band band-left" data-a="0" data-b="0.17" data-scrima="0.7" data-entrance="blur" style="--scrimA:.7">
       <div class="inner">
-        <p class="kicker">Prozesse in KMU und Teams</p>
-        <h1 class="split-blur">Gewachsen statt geplant.</h1>
+        <p class="kicker"><span class="dot" aria-hidden="true"></span>Prozesse in KMU und Teams</p>
+        <h1 class="split-blur">Gewachsen statt <em class="hl">geplant.</em></h1>
+        <span class="rule" aria-hidden="true"></span>
+        <p class="lead">Jeder Ablauf im Betrieb ist irgendwann so entstanden. Selten so gedacht.</p>
       </div>
     </div>
 
@@ -405,6 +423,11 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
         <p class="settle-sub">Prozessanalyse und Optimierung für KMU und Teams. Klar, ehrlich, digital.</p>
         <p class="settle-cta"><a class="btn" href="#kontakt">Kostenloser Prozess‑Check</a></p>
       </div>
+    </div>
+
+    <div class="scroll-cue" id="scroll-cue" aria-hidden="true">
+      <span class="cue-label">Scrollen</span>
+      <span class="cue-line"></span>
     </div>
 
     <div class="ring-wrap" id="ring-wrap" aria-hidden="true">
@@ -750,10 +773,11 @@ function splitChars(el,mode,seed){
 }
 function splitBlur(el){
   const text=el.textContent;
+  const html=el.innerHTML;
   el.innerHTML='<span class="visually-hidden"></span><span class="wrap" aria-hidden="true"><span class="soft"></span><span class="sharp"></span></span>';
   el.querySelector('.visually-hidden').textContent=text;
-  el.querySelector('.soft').textContent=text;
-  el.querySelector('.sharp').textContent=text;
+  el.querySelector('.soft').innerHTML=html;
+  el.querySelector('.sharp').innerHTML=html;
 }
 
 const bands=[...document.querySelectorAll('.band')].map((el,i)=>{
@@ -795,7 +819,7 @@ video.addEventListener('seeked',()=>{
   seekBusy=false;
   if(pendingTime!==null){const t=pendingTime;pendingTime=null;requestSeek(t)}
 });
-video.addEventListener('error',()=>{seekBusy=false;pendingTime=null});
+video.addEventListener('error',()=>{seekBusy=false;pendingTime=null;failVideo()});
 function requestSeek(t){
   if(!video.duration)return;
   if(seekBusy){pendingTime=t;return}
@@ -844,6 +868,25 @@ function tick(now){
 function onScroll(){
   target=heroProgress();
   if(rafId===null&&heroOnScreen)rafId=requestAnimationFrame(tick);
+  if(target<=0.004)armBreath();
+  const cue=document.getElementById('scroll-cue');
+  const gone=target>0.02;
+  if(cue&&gone!==cueGone){cueGone=gone;cue.classList.toggle('gone',gone)}
+}
+
+/* Leerlauf-Atmen: der Knoten lebt, bevor gescrollt wird */
+let breathId=null,breathT0=null,cueGone=false;
+function breatheTick(now){
+  breathId=null;
+  if(!scrubOn||!heroOnScreen||document.hidden||target>0.004||!video.duration||reduceQuery.matches)return;
+  if(breathT0===null)breathT0=now;
+  const t=(now-breathT0)/1000;
+  const off=(1-Math.cos(t*Math.PI/3))/2*0.045;
+  requestSeek(off*video.duration);
+  breathId=requestAnimationFrame(breatheTick);
+}
+function armBreath(){
+  if(breathId===null)breathId=requestAnimationFrame(breatheTick);
 }
 
 /* Blob-Loader mit Ring */
@@ -876,13 +919,22 @@ async function loadHeroBlob(){
   }
   clearTimeout(watchdog);
   if(ring)ring.style.setProperty('--ld',0);
+  video.preload='auto';
   video.src=URL.createObjectURL(new Blob(chunks,{type:'video/mp4'}));
   video.load();
-  video.addEventListener('canplay',()=>{
+  let readyDone=false;
+  function videoReady(){
+    if(readyDone||!video.duration)return;
+    readyDone=true;
     requestSeek(heroProgress()*video.duration);
     stage.classList.add('video-ready');
     if(ringWrap)ringWrap.style.opacity='0';
-  },{once:true});
+    armBreath();
+  }
+  video.addEventListener('loadedmetadata',videoReady);
+  video.addEventListener('loadeddata',videoReady);
+  video.addEventListener('canplay',videoReady);
+  setTimeout(videoReady,1200);
 }
 function makeScrollChevron(){
   const s=document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -890,7 +942,10 @@ function makeScrollChevron(){
   s.innerHTML='<path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
   return s;
 }
+let videoFailed=false;
 function failVideo(){
+  if(videoFailed)return;
+  videoFailed=true;
   stage.classList.add('video-failed');
   if(ringWrap){ringWrap.innerHTML='';ringWrap.appendChild(makeScrollChevron());ringWrap.style.opacity=''}
 }
@@ -950,6 +1005,7 @@ MQLS.forEach(m=>m.addEventListener('change',applyHeroMode));
 const heroObserver=new IntersectionObserver(entries=>{
   heroOnScreen=entries[0].isIntersecting;
   if(heroOnScreen&&scrubOn)onScroll();
+  if(heroOnScreen)armBreath();
 },{rootMargin:'80px 0px'});
 heroObserver.observe(hero);
 
@@ -1089,6 +1145,7 @@ reduceQuery.addEventListener('change',e=>{
 /* ============ Tab versteckt: Pause ============ */
 document.addEventListener('visibilitychange',()=>{
   document.body.classList.toggle('paused',document.hidden);
+  if(!document.hidden)armBreath();
 });
 
 /* ============ Start ============ */
