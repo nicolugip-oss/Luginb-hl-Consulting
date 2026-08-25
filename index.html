@@ -38,7 +38,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{overflow-x:hidden;overflow-x:clip}
-html{scroll-behavior:smooth}
 body{
   background:var(--canvas);
   color:var(--text-primary);
@@ -126,7 +125,7 @@ nav.scrolled{border-bottom-color:var(--line);background:rgba(11,17,28,.82)}
 @keyframes chevDrift{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(7px);opacity:1}}
 
 .band{position:absolute;inset:0;opacity:0;pointer-events:none;text-shadow:var(--tshadow)}
-.band .inner{position:absolute;max-width:46ch}
+.band .inner{position:absolute;max-width:46ch;z-index:1}
 .band-left .inner{left:6vw;top:29vh}
 .band .kicker{font-family:var(--mono);font-size:.8rem;font-weight:500;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:18px}
 .band h1,.band .h{font-size:clamp(2.1rem,4.6vw,3.7rem);max-width:16ch}
@@ -135,7 +134,9 @@ nav.scrolled{border-bottom-color:var(--line);background:rgba(11,17,28,.82)}
   opacity:calc(.25 + .75*var(--k,1));
   inset:-4%;
   background:radial-gradient(ellipse 46% 58% at 26% 46%, rgba(5,8,14,var(--scrimA,.66)) 0%, rgba(5,8,14,calc(var(--scrimA,.66)*.66)) 46%, rgba(5,8,14,0) 76%)}
-.band-settle::before{background:radial-gradient(ellipse 64% 54% at 50% 40%, rgba(5,8,14,var(--scrimA,.62)) 0%, rgba(5,8,14,calc(var(--scrimA,.62)*.66)) 46%, rgba(5,8,14,0) 76%)}
+.band-settle::before{background:radial-gradient(ellipse 84% 68% at 50% 42%, rgba(5,8,14,var(--scrimA,.62)) 0%, rgba(5,8,14,calc(var(--scrimA,.62)*.72)) 50%, rgba(5,8,14,0) 80%)}
+.band-settle::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:rgba(7,11,18,.42);opacity:var(--k,0)}
 .band-settle .inner{left:50%;top:50%;transform:translate(-50%,-52%);text-align:center;max-width:60ch}
 .band-settle .h{max-width:none}
 .band-settle .settle-sub{margin:22px auto 0;max-width:44ch;color:var(--text-primary);font-size:1.1rem;opacity:var(--ks,0);transform:translateY(calc((1 - var(--ks,0))*14px))}
@@ -713,7 +714,7 @@ const bands=[...document.querySelectorAll('.band')].map((el,i)=>{
 
 /* ============ Hero-Scrub ============ */
 const VIDEO_URL='assets/hero-scrub.mp4';
-const VIDEO_BYTES=6000000;
+const VIDEO_BYTES=3292724;
 const stage=document.getElementById('stage');
 const video=document.getElementById('hero-video');
 const posterLayer=document.getElementById('poster');
