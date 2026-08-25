@@ -124,7 +124,7 @@ nav.scrolled .nav-pill{background:rgba(14,21,34,.86);border-color:rgba(148,166,1
 @media (max-width:520px){.brand span{display:none}}
 
 /* ============ Hero (Scrub) ============ */
-.hero{position:relative;height:520vh}
+.hero{position:relative;height:380vh}
 .stage{position:sticky;top:0;height:100vh;overflow:hidden}
 .poster,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .poster{background-size:cover;background-position:center;}
@@ -137,7 +137,7 @@ nav.scrolled .nav-pill{background:rgba(14,21,34,.86);border-color:rgba(148,166,1
 .ring-wrap{position:absolute;right:26px;bottom:26px;color:var(--accent);opacity:.85}
 .ring{display:block;width:34px;height:34px;transform:rotate(-90deg)}
 .ring circle{transition:stroke-dashoffset .2s linear}
-.scroll-cue{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;
+.scroll-cue{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;
   transition:opacity .6s var(--ease);pointer-events:none}
 .scroll-cue.gone{opacity:0}
 .cue-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.34em;text-transform:uppercase;color:var(--text-secondary);text-shadow:var(--tshadow)}
@@ -150,18 +150,36 @@ nav.scrolled .nav-pill{background:rgba(14,21,34,.86);border-color:rgba(148,166,1
 
 .band{position:absolute;inset:0;opacity:0;pointer-events:none;text-shadow:var(--tshadow)}
 .band .inner{position:absolute;max-width:46ch;z-index:1}
-.band-left .inner{left:6vw;top:29vh}
+.band-left .inner{left:6vw;top:21vh}
 .band .kicker{font-family:var(--mono);font-size:.8rem;font-weight:500;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:18px}
-.band h1,.band .h{font-size:clamp(2.1rem,4.6vw,3.7rem);max-width:16ch}
-.band h1{font-size:clamp(2.6rem,6vw,4.7rem)}
+.band h1,.band .h{font-size:clamp(2.1rem,4.4vw,3.5rem);max-width:17ch}
+.band .h + .lead{margin-top:20px}
+.band h1{font-size:clamp(2.2rem,4.6vw,3.9rem);max-width:14ch}
 .band .hl{font-style:normal;color:var(--accent);text-shadow:0 0 26px rgba(79,212,234,.5),var(--tshadow)}
 .band .kicker .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);
   margin-right:11px;vertical-align:1px;box-shadow:0 0 0 0 rgba(79,212,234,.55);animation:dotPulse 3.2s ease-out -0.8s infinite}
 @keyframes dotPulse{0%{box-shadow:0 0 0 0 rgba(79,212,234,.5)}70%{box-shadow:0 0 0 13px rgba(79,212,234,0)}100%{box-shadow:0 0 0 0 rgba(79,212,234,0)}}
-.band .rule{display:block;height:2px;width:min(300px,42vw);margin:26px 0 22px;transform-origin:left center;
+.band .rule{display:block;height:2px;width:min(260px,36vw);margin:22px 0 20px;transform-origin:left center;
   transform:scaleX(var(--k,0));background:linear-gradient(90deg,var(--accent),rgba(79,212,234,.05))}
-.band .lead{font-size:clamp(1rem,1.5vw,1.22rem);color:var(--text-primary);max-width:34ch;
+.band .lead{font-size:clamp(1rem,1.5vw,1.18rem);color:var(--text-primary);max-width:36ch;
   opacity:var(--k,0);transform:translateY(calc((1 - var(--k,0))*12px))}
+.band-left .lead{max-width:33ch}
+.band .step-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;opacity:var(--k,0)}
+.band .hero-cta{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:26px;
+  opacity:var(--k,0);transform:translateY(calc((1 - var(--k,0))*14px))}
+.band .hero-cta .btn,.band .hero-cta .quiet{pointer-events:auto}
+.band .hero-cta .quiet{display:inline-flex;align-items:center;gap:7px;color:var(--text-primary);font-size:.95rem;
+  border-bottom:1px solid rgba(148,166,190,.34);padding-bottom:3px;transition:border-color .35s var(--ease),color .35s var(--ease)}
+.band .hero-cta .quiet:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.band .hero-cta .quiet svg{transition:transform .35s var(--ease)}
+.band .hero-cta .quiet:hover svg{transform:translateX(3px)}
+
+/* Fortschritt durch die drei Schritte */
+.beats{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:flex;gap:9px;pointer-events:none;z-index:2}
+.beat{display:block;width:52px;height:2px;border-radius:2px;background:rgba(148,166,190,.26);overflow:hidden}
+.beat i{display:block;height:100%;background:var(--accent);transform-origin:left center;transform:scaleX(var(--f,0))}
+@media (max-height:560px){.beats{display:none}}
 .band .h{font-family:var(--display);font-weight:700;line-height:1.12;letter-spacing:-.01em}
 .band::before{content:"";position:absolute;pointer-events:none;
   opacity:calc(.25 + .75*var(--k,1));
@@ -254,16 +272,13 @@ main{position:relative}
 /* Vorgehen + Interaktion */
 .untangle{margin:46px 0 10px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center}
 @media (max-width:900px){.untangle{grid-template-columns:1fr}}
-.untangle-stage{position:relative;height:120px;border:1px solid var(--line);border-radius:16px;background:var(--panel-2);overflow:hidden}
-.untangle-stage svg{position:absolute;inset:0;width:100%;height:100%}
-.untangle-stage .knot{stroke:var(--accent);stroke-width:2;fill:none;
-  transform-box:fill-box;transform-origin:center;
-  --kv:clamp(0,(var(--th,0) + .12 - var(--up,0))*8.5,1);
-  opacity:var(--kv);
-  transform:scale(calc(.28 + .72*var(--kv))) rotate(calc((1 - var(--kv))*-38deg))}
-.untangle-stage .line-p{stroke:var(--accent);stroke-width:2;fill:none;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--up,0));opacity:calc(.25 + var(--up,0)*.75)}
-.untangle-stage .spark{position:absolute;top:50%;width:7px;height:7px;border-radius:50%;background:var(--accent);
-  box-shadow:0 0 14px rgba(79,212,234,.8);transform:translate(-50%,-50%);left:calc(4% + var(--up,0)*92%);opacity:calc(var(--up,0)*.9)}
+.untangle-stage{position:relative;border:1px solid var(--line);border-radius:16px;background:var(--panel-2);overflow:hidden}
+.untangle-stage svg{display:block;width:100%;height:auto}
+.untangle-stage .thread{stroke:var(--accent);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 5px rgba(79,212,234,.3))}
+.untangle-stage .spark{position:absolute;top:50%;width:8px;height:8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 16px rgba(79,212,234,.85);transform:translate(-50%,-50%);left:calc(5% + var(--up,0)*90%);
+  opacity:calc(.2 + var(--up,0)*.8);transition:opacity .4s var(--ease)}
 .hold-btn{white-space:nowrap;user-select:none;-webkit-user-select:none}
 .hold-btn .alt{display:none}
 .untangle.done .hold-btn .alt{display:inline}
@@ -424,40 +439,40 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <video id="hero-video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
     <div class="scrim" aria-hidden="true"></div>
 
-    <div class="band band-left" data-a="0" data-b="0.17" data-scrima="0.7" data-entrance="blur" style="--scrimA:.7">
+    <div class="band band-left" data-a="0" data-b="0.34" data-entrance="blur" style="--scrimA:.72">
       <div class="inner">
-        <p class="kicker"><span class="dot" aria-hidden="true"></span>Prozesse in KMU und Teams</p>
-        <h1 class="split-blur">Gewachsen statt <em class="hl">geplant.</em></h1>
+        <p class="kicker"><span class="dot" aria-hidden="true"></span>Prozessanalyse und Optimierung · Zürich</p>
+        <h1 class="split-blur">Ihre Abläufe. <em class="hl">Endlich klar.</em></h1>
         <span class="rule" aria-hidden="true"></span>
-        <p class="lead">Jeder Ablauf im Betrieb ist irgendwann so entstanden. Selten so gedacht.</p>
+        <p class="lead">Ich schaue mir an, wie in Ihrem Betrieb wirklich gearbeitet wird, und räume dort auf, wo Zeit verloren geht.</p>
+        <p class="hero-cta">
+          <a class="btn" href="#kontakt">Kostenloser Prozess‑Check</a>
+          <a class="quiet" href="#vorgehen">So läuft es
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </p>
       </div>
     </div>
 
-    <div class="band band-left" data-a="0.205" data-b="0.375" data-scrima="0.66" data-entrance="drift" style="--scrimA:.66">
+    <div class="band band-left" data-a="0.38" data-b="0.66" data-entrance="drift" style="--scrimA:.68">
       <div class="inner">
+        <p class="step-tag">Das Problem</p>
         <p class="h split-chars">Excel hier, Mails dort, Wissen nur in Köpfen.</p>
+        <p class="lead">Jeder kennt seinen Teil. Das Ganze kennt niemand.</p>
       </div>
     </div>
 
-    <div class="band band-left" data-a="0.41" data-b="0.58" data-scrima="0.66" data-entrance="grid" style="--scrimA:.66">
+    <div class="band band-settle" data-a="0.70" data-b="1" data-entrance="rise" style="--scrimA:.8">
       <div class="inner">
-        <p class="h split-chars">Ich nehme den Knoten auseinander, Faden für Faden.</p>
-      </div>
-    </div>
-
-    <div class="band band-left" data-a="0.615" data-b="0.785" data-scrima="0.68" data-entrance="scatter" style="--scrimA:.68">
-      <div class="inner">
-        <p class="h split-chars">Bis sichtbar wird, wo Zeit verloren geht.</p>
-      </div>
-    </div>
-
-    <div class="band band-settle" data-a="0.82" data-b="1" data-scrima="0.8" data-entrance="rise" style="--scrimA:.8">
-      <div class="inner">
-        <p class="kicker">Luginbühl Consulting</p>
+        <p class="step-tag">Die Lösung</p>
         <p class="h split-words">Vom Knoten zur klaren Linie.</p>
-        <p class="settle-sub">Prozessanalyse und Optimierung für KMU und Teams. Klar, ehrlich, digital.</p>
+        <p class="settle-sub">Prozessanalyse, Optimierung und dosierte Digitalisierung für KMU und Teams.</p>
         <p class="settle-cta"><a class="btn" href="#kontakt">Kostenloser Prozess‑Check</a></p>
       </div>
+    </div>
+
+    <div class="beats" aria-hidden="true">
+      <span class="beat"><i></i></span><span class="beat"><i></i></span><span class="beat"><i></i></span>
     </div>
 
     <div class="scroll-cue" id="scroll-cue" aria-hidden="true">
@@ -480,9 +495,9 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   <div class="backdrop" aria-hidden="true"></div>
   <div class="veil" aria-hidden="true"></div>
   <div class="inner">
-    <p class="kicker">Prozessanalyse und Optimierung</p>
-    <h1>Vom Knoten zur klaren Linie.</h1>
-    <p>Ich entwirre gewachsene Abläufe in KMU und Teams, bis sie wieder laufen.</p>
+    <p class="kicker">Prozessanalyse und Optimierung · Zürich</p>
+    <h1>Ihre Abläufe. Endlich klar.</h1>
+    <p>Ich schaue mir an, wie in Ihrem Betrieb wirklich gearbeitet wird, und räume dort auf, wo Zeit verloren geht.</p>
     <a class="btn" href="#kontakt">Kostenloser Prozess‑Check</a>
   </div>
 </header>
@@ -564,18 +579,12 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   <section class="section rev" id="vorgehen">
     <p class="kicker part">So läuft es</p>
     <h2 class="part">Ziehen Sie am Faden.</h2>
-    <p class="lede part">Ein Klick, zwei Sekunden, sechs Knoten weniger. Genau das mache ich mit Ihren Abläufen, nur etwas langsamer.</p>
+    <p class="lede part">Ein Klick, zwei Sekunden, ein sauberer Faden. Genau das mache ich mit Ihren Abläufen, nur etwas langsamer.</p>
 
     <div class="untangle part" id="untangle">
       <div class="untangle-stage" aria-hidden="true">
-        <svg viewBox="0 0 600 120" preserveAspectRatio="none">
-          <path class="line-p" pathLength="1" d="M20 60 L580 60" vector-effect="non-scaling-stroke"/>
-          <g transform="translate(92,0)"><path class="knot" style="--th:0.072" d="M-46 60 C-20 60 -24 28 0 31 C24 34 17 76 2 69 C-11 63 5 57 46 60" vector-effect="non-scaling-stroke"/></g>
-          <g transform="translate(175,0)"><path class="knot" style="--th:0.215" d="M-46 60 C-20 60 -24 28 0 31 C24 34 17 76 2 69 C-11 63 5 57 46 60" vector-effect="non-scaling-stroke"/></g>
-          <g transform="translate(258,0)"><path class="knot" style="--th:0.358" d="M-46 60 C-20 60 -24 28 0 31 C24 34 17 76 2 69 C-11 63 5 57 46 60" vector-effect="non-scaling-stroke"/></g>
-          <g transform="translate(341,0)"><path class="knot" style="--th:0.502" d="M-46 60 C-20 60 -24 28 0 31 C24 34 17 76 2 69 C-11 63 5 57 46 60" vector-effect="non-scaling-stroke"/></g>
-          <g transform="translate(424,0)"><path class="knot" style="--th:0.645" d="M-46 60 C-20 60 -24 28 0 31 C24 34 17 76 2 69 C-11 63 5 57 46 60" vector-effect="non-scaling-stroke"/></g>
-          <g transform="translate(505,0)"><path class="knot" style="--th:0.788" d="M-46 60 C-20 60 -24 28 0 31 C24 34 17 76 2 69 C-11 63 5 57 46 60" vector-effect="non-scaling-stroke"/></g>
+        <svg viewBox="0 0 900 150">
+          <path class="thread" id="thread-path" d=""/>
         </svg>
         <span class="spark"></span>
       </div>
@@ -583,7 +592,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
         <span class="default">Am Faden ziehen</span>
         <span class="alt">Entwirrt. So fühlt sich das an.</span>
       </button>
-      <span id="hold-hint" class="visually-hidden">Knopf drücken. Die Animation zeigt in zwei Sekunden, wie sich sechs Knoten nacheinander zu einer geraden Linie auflösen.</span>
+      <span id="hold-hint" class="visually-hidden">Knopf drücken. Die Animation zeigt in zwei Sekunden, wie sich ein verknüllter Faden von links nach rechts zu einer geraden Linie zieht.</span>
     </div>
 
     <div class="steps">
@@ -884,8 +893,9 @@ const bands=[...document.querySelectorAll('.band')].map((el,i)=>{
     else if(entrance==='scatter'){el.classList.add('e-scatter');splitChars(target,'scatter',307+i)}
     else if(entrance==='rise'){el.classList.add('e-rise');splitChars(target,'rise',401+i)}
   }
-  return {el,a:+el.dataset.a,b:+el.dataset.b,op:-1,k:-1,ks:-1,kb:-1,settle:el.classList.contains('band-settle')};
+  return {el,a:+el.dataset.a,b:+el.dataset.b,op:-1,k:-1,ks:-1,kb:-1,f:-1,settle:el.classList.contains('band-settle')};
 });
+const beatEls=[...document.querySelectorAll('.beat i')];
 
 /* ============ Hero-Scrub ============ */
 const VIDEO_URL='assets/hero-scrub.mp4';
@@ -940,6 +950,11 @@ function updateCaptions(p){
       if(band.pe!==pe){band.pe=pe;band.el.style.visibility=pe?'visible':'hidden'}
     }
     if(Math.abs(k-band.k)>=0.008||band.k<0){band.k=k;band.el.style.setProperty('--k',k)}
+    const bi=bands.indexOf(band);
+    if(beatEls[bi]){
+      const f=+clamp((p-a)/(b-a),0,1).toFixed(3);
+      if(Math.abs(f-band.f)>=0.01||band.f<0){band.f=f;beatEls[bi].style.setProperty('--f',f)}
+    }
     if(band.settle){
       const ks=+clamp((k-0.66)*4,0,1).toFixed(3);
       const kb=+clamp((k-0.78)*5,0,1).toFixed(3);
@@ -1077,7 +1092,7 @@ function enableScrub(){
   if(scrubOn)return;scrubOn=true;
   initHeroOnce();
   addEventListener('scroll',onScroll,{passive:true});
-  bands.forEach(b=>{b.op=-1;b.k=-1;b.ks=-1;b.kb=-1});
+  bands.forEach(b=>{b.op=-1;b.k=-1;b.ks=-1;b.kb=-1;b.f=-1});
   unpinFinalStates();
   target=heroProgress();shown=target;
   updateCaptions(shown);
@@ -1169,8 +1184,49 @@ const untangle=document.getElementById('untangle');
 const holdBtn=document.getElementById('hold-btn');
 let upRaf=null,holdDone=false;
 const UNTANGLE_MS=2000;
+const threadPathEl=document.getElementById('thread-path');
+/* Ein zerknuellter Faden: ungleichmaessige Schlaufen, unterschiedlich gross und verteilt */
+const TANGLE=[
+  [40,75],[70,74],[96,70],
+  [118,52],[138,44],[152,58],[136,70],[120,62],[132,44],[152,36],[172,48],[164,68],[146,76],[136,62],[152,52],[176,58],[192,74],
+  [220,90],[252,104],[286,110],[318,102],
+  [346,86],[372,62],[398,44],[424,54],[416,78],[390,84],[372,70],[386,52],[410,46],[420,60],
+  [446,74],[476,82],[506,78],
+  [530,62],[548,46],[566,54],[558,72],[540,68],[550,50],[572,42],[592,52],[586,72],[566,80],[556,68],[572,58],[598,64],[622,76],
+  [652,86],[684,88],[714,80],
+  [736,66],[754,56],[768,66],[756,78],[742,70],[756,60],[778,66],
+  [806,74],[834,75],[860,75]
+];
+const TN=TANGLE.length;
+const STRAIGHT=TANGLE.map((_,i)=>[40+820*i/(TN-1),75]);
+
+function smooth01(t){t=clamp(t,0,1);return t*t*(3-2*t)}
+/* Catmull-Rom durch die Punkte, als saubere Bezierkurve ausgegeben */
+function toPath(pts){
+  let d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[i>0?i-1:0],p1=pts[i],p2=pts[i+1],p3=pts[i+2<pts.length?i+2:pts.length-1];
+    const c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
+    const c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+    d+='C'+c1x.toFixed(1)+' '+c1y.toFixed(1)+' '+c2x.toFixed(1)+' '+c2y.toFixed(1)+' '+p2[0].toFixed(1)+' '+p2[1].toFixed(1);
+  }
+  return d;
+}
+/* Das Glattziehen laeuft von links nach rechts durch den Faden */
+function renderThread(p){
+  if(!threadPathEl)return;
+  const pts=new Array(TN);
+  for(let i=0;i<TN;i++){
+    const th=(i/(TN-1))*0.55;
+    const t=smooth01((p-th)/0.45);
+    pts[i]=[TANGLE[i][0]+(STRAIGHT[i][0]-TANGLE[i][0])*t,
+            TANGLE[i][1]+(STRAIGHT[i][1]-TANGLE[i][1])*t];
+  }
+  threadPathEl.setAttribute('d',toPath(pts));
+}
 function setUp(v){
   untangle.querySelector('.untangle-stage').style.setProperty('--up',v.toFixed(3));
+  renderThread(v);
 }
 function runUntangle(){
   if(holdDone)return;
@@ -1180,8 +1236,7 @@ function runUntangle(){
   const t0=performance.now();
   (function step(now){
     const p=clamp((now-t0)/UNTANGLE_MS,0,1);
-    const e=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
-    setUp(e);
+    setUp(p);
     if(p<1)upRaf=requestAnimationFrame(step);
     else{upRaf=null;completeUntangle()}
   })(performance.now());
@@ -1194,6 +1249,7 @@ function completeUntangle(){
   const steps=[...document.querySelectorAll('.step')];
   steps.forEach((s,i)=>setTimeout(()=>s.classList.add('lit'),160+i*380));
 }
+setUp(0);
 if(holdBtn){
   holdBtn.addEventListener('click',e=>{e.preventDefault();runUntangle()});
 }
@@ -1230,6 +1286,7 @@ function pinToFinalStates(){
   document.querySelectorAll('.rev').forEach(el=>el.classList.add('in','settled'));
   document.querySelectorAll('.step').forEach(s=>s.classList.add('lit'));
   if(untangle){holdDone=true;setUp(1);untangle.classList.remove('running');untangle.classList.add('done')}
+  beatEls.forEach(e=>e.style.setProperty('--f',1));
   bands.forEach(b=>{
     b.el.style.opacity='';b.el.style.visibility='';
     b.el.style.setProperty('--k',1);
