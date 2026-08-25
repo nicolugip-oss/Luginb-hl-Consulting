@@ -1,0 +1,30 @@
+name: asset-bridge
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'Space-separated URLs to fetch into bridge/'
+        required: true
+        type: string
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch files
+        env:
+          URLS: ${{ inputs.urls }}
+        run: |
+          mkdir -p bridge
+          cd bridge
+          for u in $URLS; do curl -fSL -O "$u"; done
+          ls -la
+      - name: Commit
+        run: |
+          git config user.name "asset-bridge"
+          git config user.email "actions@users.noreply.github.com"
+          git add bridge
+          git commit -m "Bridge: fetched assets"
+          git push
