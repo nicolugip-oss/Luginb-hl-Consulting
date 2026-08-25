@@ -15,7 +15,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%230B111C'/%3E%3Cpath d='M17 7 C9 12 25 15 15 21 L15 36 Q15 39 18 39 L38 39' fill='none' stroke='%234FD4EA' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap"></noscript>
 <style>
 /* ============ Tokens ============ */
 :root{
@@ -32,7 +33,7 @@
   --tshadow:0 1px 2px rgba(4,7,12,.95),0 3px 12px rgba(4,7,12,.78),0 10px 44px rgba(4,7,12,.8);
   --ease:cubic-bezier(.22,.7,.24,1);
   --ease-out:cubic-bezier(.16,1,.3,1);
-  --display:"Bricolage Grotesque",Georgia,serif;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,Arial,sans-serif;
   --body:"Instrument Sans",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
 }
@@ -341,7 +342,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <a href="#ueber-mich">Über mich</a>
     <a href="#faq">FAQ</a>
   </div>
-  <a class="btn nav-cta" href="#kontakt">Prozess-Check</a>
+  <a class="btn nav-cta" href="#kontakt">Prozess‑Check</a>
 </nav>
 
 <span id="top"></span>
@@ -383,7 +384,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
         <p class="kicker">Luginbühl Consulting</p>
         <p class="h split-words">Vom Knoten zur klaren Linie.</p>
         <p class="settle-sub">Prozessanalyse und Optimierung für KMU und Teams. Klar, ehrlich, digital.</p>
-        <p class="settle-cta"><a class="btn" href="#kontakt">Kostenloser Prozess-Check</a></p>
+        <p class="settle-cta"><a class="btn" href="#kontakt">Kostenloser Prozess‑Check</a></p>
       </div>
     </div>
 
@@ -405,7 +406,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <p class="kicker">Prozessanalyse und Optimierung</p>
     <h1>Vom Knoten zur klaren Linie.</h1>
     <p>Ich entwirre gewachsene Abläufe in KMU und Teams, bis sie wieder laufen.</p>
-    <a class="btn" href="#kontakt">Kostenloser Prozess-Check</a>
+    <a class="btn" href="#kontakt">Kostenloser Prozess‑Check</a>
   </div>
 </header>
 
@@ -491,7 +492,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <div class="untangle part" id="untangle">
       <div class="untangle-stage" aria-hidden="true">
         <svg viewBox="0 0 600 120" preserveAspectRatio="none">
-          <path class="knot-p" d="M20 60 C90 20 120 100 190 60 C240 30 230 95 290 60 C340 32 330 92 380 60 C450 18 480 100 580 60" vector-effect="non-scaling-stroke"/>
+          <path class="knot-p" d="M20 60 C60 25 95 90 130 62 C170 30 130 15 145 48 C158 76 205 88 235 60 C270 28 232 12 246 46 C260 80 310 85 345 58 C385 28 345 14 360 48 C374 78 430 80 470 58 C510 36 545 55 580 60" vector-effect="non-scaling-stroke"/>
           <path class="line-p" pathLength="1" d="M20 60 L580 60" vector-effect="non-scaling-stroke"/>
         </svg>
         <span class="spark"></span>
@@ -607,7 +608,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <div class="veil" aria-hidden="true"></div>
       <div class="inner">
         <p class="kicker">Der erste Faden</p>
-        <h2>Kostenloser Prozess-Check</h2>
+        <h2>Kostenloser Prozess‑Check</h2>
         <p class="lede" style="color:var(--text-primary)">Beschreiben Sie in zwei, drei Sätzen, wo es klemmt. Ich melde mich innerhalb von zwei Tagen mit einer ehrlichen Einschätzung.</p>
         <form id="contact-form" novalidate>
           <label>Ihr Name
@@ -650,6 +651,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 (function(){
 "use strict";
 requestAnimationFrame(function(){document.body.classList.add('ready')});
+setTimeout(function(){document.body.classList.add('ready')},700);
 
 /* ============ Utilities ============ */
 function rng(seed){let s=seed>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296}}
@@ -855,6 +857,8 @@ function initHeroOnce(){
     else loadRampId=null;
   }
   loadRampId=requestAnimationFrame(ramp);
+  /* Sicherung: falls rAF gedrosselt ist, Band 1 nach 2.5s fertig setzen */
+  setTimeout(()=>{if(loadK<1){loadK=1;updateCaptions(shown)}},2500);
 }
 
 /* Fünf Gates, live, identisch mit dem CSS */

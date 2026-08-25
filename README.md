@@ -13,11 +13,6 @@ Pains, Leistungen, Vorgehen mit Halte-Interaktion, Über mich, Kompetenzen, FAQ,
 - `assets/hero-poster.jpg` – Erstes Frame (Poster)
 - `assets/hero-ending.jpg` – Letztes Frame (statischer Hero, Kontakt-Hintergrund)
 
-Falls `assets/` noch fehlt: den GitHub-Action-Workflow **asset-bridge** einmal
-manuell ausführen (Actions → asset-bridge → Run workflow). Er lädt die drei
-Dateien aus der Higgsfield-Medienbibliothek und committet sie. Danach kann
-`.github/workflows/asset-bridge.yml` gelöscht werden.
-
 ## Lokale Vorschau
 
 ```
