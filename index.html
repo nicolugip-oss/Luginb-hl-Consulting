@@ -28,7 +28,7 @@
   --line:rgba(148,166,190,.16);
   --line-strong:rgba(148,166,190,.38);
   --text-primary:#EDF2F8;
-  --text-secondary:#96A5BA;
+  --text-secondary:#A3B1C4;
   --tshadow:0 1px 2px rgba(4,7,12,.95),0 3px 12px rgba(4,7,12,.78),0 10px 44px rgba(4,7,12,.8);
   --ease:cubic-bezier(.22,.7,.24,1);
   --ease-out:cubic-bezier(.16,1,.3,1);
@@ -60,14 +60,14 @@ a:hover{color:var(--accent-hover)}
 
 /* ============ Environment layer ============ */
 .env{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-.env .bg{position:absolute;inset:-10%;background:url("assets/bg-ambient.jpg") center/cover no-repeat;opacity:.62;
-  filter:blur(30px) saturate(1.15);
+.env .bg{position:absolute;inset:-10%;background:url("assets/bg-ambient.jpg") center/cover no-repeat;
+  opacity:.42;filter:blur(34px) saturate(.15);
   animation:envDrift 110s ease-in-out -30s infinite alternate}
 .env::before{content:"";position:absolute;inset:-20%;
   background:
-    radial-gradient(60% 50% at 20% 15%, rgba(79,212,234,.09), transparent 60%),
-    radial-gradient(50% 45% at 85% 75%, rgba(58,110,165,.11), transparent 65%),
-    var(--canvas);
+    radial-gradient(72% 60% at var(--g1x,20%) var(--g1y,15%), var(--g1,rgba(79,212,234,.20)), transparent 64%),
+    radial-gradient(68% 58% at var(--g2x,85%) var(--g2y,75%), var(--g2,rgba(58,110,165,.22)), transparent 68%),
+    var(--amb,#0A1018);
   animation:envDrift 90s ease-in-out -20s infinite alternate;
 }
 .env::after{content:"";position:absolute;inset:0;opacity:.5;
@@ -234,6 +234,12 @@ nav.scrolled .nav-pill{background:rgba(14,21,34,.86);border-color:rgba(148,166,1
 /* ============ Sektionen ============ */
 main{position:relative}
 .section{position:relative;padding:110px 6vw;max-width:1200px;margin:0 auto}
+.section.panel{padding:88px clamp(28px,4vw,64px);border:1px solid rgba(148,166,190,.13);border-radius:28px;
+  background:linear-gradient(180deg,rgba(148,166,190,.055) 0%,rgba(148,166,190,.02) 42%,rgba(148,166,190,.045) 100%);
+  margin-top:26px;margin-bottom:26px;overflow:hidden}
+.section.panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(79,212,234,.4) 26%,rgba(79,212,234,.4) 74%,transparent)}
+@media (max-width:700px){.section.panel{border-radius:20px;padding-left:22px;padding-right:22px}}
 .kicker{font-family:var(--mono);font-size:.8rem;font-weight:500;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:16px}
 .section h2{font-size:clamp(1.8rem,3.4vw,2.6rem);max-width:22ch}
 .lede{margin-top:16px;color:var(--text-secondary);max-width:58ch}
@@ -519,7 +525,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   </div>
 
   <!-- Der Knoten -->
-  <section class="section rev" id="knoten">
+  <section class="section rev panel" id="knoten">
     <p class="kicker part">Woran es klemmt</p>
     <h2 class="part">Drei Sätze, die ich in fast jedem Betrieb höre.</h2>
     <div class="grid-3">
@@ -576,7 +582,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   </section>
 
   <!-- Vorgehen -->
-  <section class="section rev" id="vorgehen">
+  <section class="section rev panel" id="vorgehen">
     <p class="kicker part">So läuft es</p>
     <h2 class="part">Ziehen Sie am Faden.</h2>
     <p class="lede part">Ein Klick, zwei Sekunden, ein sauberer Faden. Genau das mache ich mit Ihren Abläufen, nur etwas langsamer.</p>
@@ -650,7 +656,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   </section>
 
   <!-- Kompetenzen -->
-  <section class="section rev" id="kompetenzen">
+  <section class="section rev panel" id="kompetenzen">
     <p class="kicker part">Werkzeugkasten</p>
     <h2 class="part">Womit ich arbeite.</h2>
     <div class="skills part">
@@ -751,7 +757,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   </section>
 
   <!-- FAQ -->
-  <section class="section rev" id="faq">
+  <section class="section rev panel" id="faq">
     <p class="kicker part">Ehrliche Fragen</p>
     <h2 class="part">Was Sie vermutlich denken.</h2>
     <div class="faq part">
@@ -1125,6 +1131,39 @@ addEventListener('scroll',()=>{
   const s=scrollY>40;
   if(s!==navScrolled){navScrolled=s;nav.classList.toggle('scrolled',s)}
 },{passive:true});
+
+/* ============ Farbreise: der Hintergrund wandert beim Scrollen ============ */
+const AMB=[
+  {p:0.00, c:[10,16,24], g1:[79,212,234,.16],  g2:[58,110,165,.17], x1:20,y1:15, x2:85,y2:75},
+  {p:0.26, c:[8,23,27],  g1:[52,205,190,.19],  g2:[30,120,145,.19], x1:76,y1:22, x2:18,y2:70},
+  {p:0.50, c:[13,14,32], g1:[112,132,245,.18], g2:[78,64,190,.19],  x1:26,y1:30, x2:80,y2:66},
+  {p:0.74, c:[19,13,29], g1:[185,120,200,.17], g2:[112,66,158,.18], x1:74,y1:18, x2:22,y2:78},
+  {p:1.00, c:[10,16,24], g1:[79,212,234,.17],  g2:[58,110,165,.17], x1:22,y1:20, x2:82,y2:72}
+];
+const rootEl=document.documentElement;
+let lastAmb=-1;
+const mix=(a,b,t)=>a+(b-a)*t;
+function rgba(v){return 'rgba('+Math.round(v[0])+','+Math.round(v[1])+','+Math.round(v[2])+','+v[3].toFixed(3)+')'}
+function updateAmbient(){
+  const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+  const p=clamp(scrollY/max,0,1);
+  if(Math.abs(p-lastAmb)<0.004)return;
+  lastAmb=p;
+  let i=0;
+  while(i<AMB.length-2&&p>AMB[i+1].p)i++;
+  const a=AMB[i],b=AMB[i+1];
+  const t=smooth01((p-a.p)/(b.p-a.p));
+  rootEl.style.setProperty('--amb','rgb('+[0,1,2].map(j=>Math.round(mix(a.c[j],b.c[j],t))).join(',')+')');
+  rootEl.style.setProperty('--g1',rgba([0,1,2,3].map(j=>mix(a.g1[j],b.g1[j],t))));
+  rootEl.style.setProperty('--g2',rgba([0,1,2,3].map(j=>mix(a.g2[j],b.g2[j],t))));
+  rootEl.style.setProperty('--g1x',mix(a.x1,b.x1,t).toFixed(1)+'%');
+  rootEl.style.setProperty('--g1y',mix(a.y1,b.y1,t).toFixed(1)+'%');
+  rootEl.style.setProperty('--g2x',mix(a.x2,b.x2,t).toFixed(1)+'%');
+  rootEl.style.setProperty('--g2y',mix(a.y2,b.y2,t).toFixed(1)+'%');
+}
+addEventListener('scroll',updateAmbient,{passive:true});
+addEventListener('resize',()=>{lastAmb=-1;updateAmbient()});
+updateAmbient();
 
 /* ============ Scrollspy: aktiver Navigationspunkt ============ */
 const navLinks=[...document.querySelectorAll('.nav-pill a')];
