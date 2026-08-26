@@ -194,6 +194,36 @@ nav.scrolled .nav-pill{background:rgba(14,21,34,.86);border-color:rgba(148,166,1
 /* Zeichen-Entrances: alles nur transform + opacity, gescrubbt über --k */
 .w{display:inline-block;white-space:nowrap}
 .c{display:inline-block}
+/* Intro: Schleier, Linien, Schreibmaschine */
+.intro-veil{position:absolute;inset:0;pointer-events:none;background:var(--canvas);opacity:0;
+  transition:opacity 1.9s var(--ease)}
+.stage.intro-armed .intro-veil{opacity:1;transition:none}
+.intro-lines{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.intro-lines i{position:absolute;top:0;bottom:0;width:1px;transform-origin:top center;transform:scaleY(0);opacity:0;
+  background:linear-gradient(180deg,transparent,rgba(79,212,234,.34) 22%,rgba(79,212,234,.16) 62%,transparent);
+  transition:transform 1.5s var(--ease),opacity 1.5s var(--ease)}
+.intro-lines i:nth-child(1){left:42%}
+.intro-lines i:nth-child(2){left:50%;transition-delay:.14s}
+.intro-lines i:nth-child(3){left:57.5%;transition-delay:.28s}
+.intro-lines i:nth-child(4){left:65%;transition-delay:.42s}
+.intro-lines.in i{transform:scaleY(1);opacity:.5}
+@media (max-width:900px){.intro-lines{display:none}}
+
+.type .c{opacity:0}
+.type .c.on{opacity:1}
+.type.caret::after{content:"";display:inline-block;width:.06em;min-width:2px;height:.92em;
+  background:var(--accent);vertical-align:-.12em;margin-left:.09em;
+  animation:caretBlink .95s steps(1,end) infinite}
+@keyframes caretBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.band .rule{transition:transform .9s var(--ease)}
+.band-intro .rule{transform:scaleX(0)}
+.band-intro .lead,.band-intro .hero-cta{opacity:0;transform:translateY(14px)}
+.band-intro.rule-in .rule{transform:scaleX(1)}
+.band-intro.lead-in .lead{opacity:var(--k,1);transform:translateY(0)}
+.band .lead,.band .hero-cta{transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.scroll-cue,.beats{transition:opacity .8s var(--ease)}
+.stage.intro-armed .scroll-cue,.stage.intro-armed .beats{opacity:0}
+
 .e-blur .soft,.e-blur .sharp{display:block}
 .e-blur .wrap{display:block;position:relative}
 .e-blur .soft{position:absolute;inset:0;filter:blur(10px);opacity:calc(1 - var(--k,0))}
@@ -212,6 +242,13 @@ nav.scrolled .nav-pill{background:rgba(14,21,34,.86);border-color:rgba(148,166,1
 .static-hero .backdrop{position:absolute;inset:0;background-size:cover;background-position:center 30%}
 .static-hero .veil{position:absolute;inset:0;background:linear-gradient(180deg, rgba(11,17,28,.32) 0%, rgba(11,17,28,.55) 55%, rgba(11,17,28,.94) 100%)}
 .static-hero .inner{position:relative;padding:120px 6vw 64px;max-width:640px;text-shadow:var(--tshadow)}
+.static-hero .inner>*{opacity:0;transform:translateY(16px);
+  transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.static-hero.in .inner>*{opacity:1;transform:translateY(0)}
+.static-hero.in .inner>*:nth-child(2){transition-delay:.12s}
+.static-hero.in .inner>*:nth-child(3){transition-delay:.24s}
+.static-hero.in .inner>*:nth-child(4){transition-delay:.36s}
+@media (prefers-reduced-motion:reduce){.static-hero .inner>*{opacity:1;transform:none}}
 .static-hero .kicker{font-family:var(--mono);font-size:.78rem;font-weight:500;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:16px}
 .static-hero h1{font-size:clamp(2.2rem,9vw,3.4rem)}
 .static-hero p{margin:18px 0 30px;color:var(--text-primary);max-width:38ch}
@@ -456,11 +493,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <div class="poster" id="poster" aria-hidden="true"></div>
     <video id="hero-video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
     <div class="scrim" aria-hidden="true"></div>
+    <div class="intro-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="intro-veil" id="intro-veil" aria-hidden="true"></div>
 
-    <div class="band band-left" data-a="0" data-b="0.34" data-entrance="blur" style="--scrimA:.72">
+    <div class="band band-left" data-a="0" data-b="0.34" data-entrance="type" style="--scrimA:.72">
       <div class="inner">
-        <p class="kicker"><span class="dot" aria-hidden="true"></span>Prozessanalyse und Optimierung · Zürich</p>
-        <h1 class="split-blur">Ihre Abläufe. <em class="hl">Endlich klar.</em></h1>
+        <p class="kicker"><span class="dot" aria-hidden="true"></span><span class="typeline">Prozessanalyse und Optimierung · Zürich</span></p>
+        <h1 class="split-type">Ihre Abläufe. <em class="hl">Endlich klar.</em></h1>
         <span class="rule" aria-hidden="true"></span>
         <p class="lead">Ich schaue mir an, wie in Ihrem Betrieb wirklich gearbeitet wird, und räume dort auf, wo Zeit verloren geht.</p>
         <p class="hero-cta">
@@ -883,8 +922,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 <script>
 (function(){
 "use strict";
-requestAnimationFrame(function(){document.body.classList.add('ready')});
-setTimeout(function(){document.body.classList.add('ready')},700);
+requestAnimationFrame(function(){
+  document.body.classList.add('ready');
+  const sh=document.querySelector('.static-hero');
+  if(sh)requestAnimationFrame(()=>sh.classList.add('in'));
+});
+setTimeout(function(){document.body.classList.add('ready');
+  const sh=document.querySelector('.static-hero');if(sh)sh.classList.add('in')},700);
 
 /* ============ Utilities ============ */
 function rng(seed){let s=seed>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296}}
@@ -926,6 +970,57 @@ function splitChars(el,mode,seed){
   });
   el.textContent='';el.appendChild(sr);el.appendChild(vis);
 }
+/* Zerlegt Text in Zeichen, die einzeln erscheinen koennen.
+   Vorlesesoftware bekommt weiterhin den vollstaendigen Satz. */
+function splitType(el){
+  const text=el.textContent;
+  const src=[...el.childNodes];
+  const sr=document.createElement('span');
+  sr.className='visually-hidden';sr.textContent=text;
+  const vis=document.createElement('span');
+  vis.setAttribute('aria-hidden','true');
+  const chars=[];
+  /* Zeichen werden zu Wortgruppen zusammengefasst, sonst bricht der
+     Browser beim Tippen mitten im Wort um. */
+  function addWord(word,parent){
+    if(!word)return;
+    const w=document.createElement('span');
+    w.className='w';
+    for(const ch of word){
+      const c=document.createElement('span');
+      c.className='c';c.textContent=ch;
+      w.appendChild(c);chars.push(c);
+    }
+    parent.appendChild(w);
+  }
+  /* Echter Text-Knoten: nur so bleibt das Leerzeichen sichtbar UND
+     eine gueltige Umbruchstelle. Zaehlt als Tippschritt ohne Element. */
+  function addSpace(parent){
+    parent.appendChild(document.createTextNode(' '));
+    chars.push(null);
+  }
+  function walk(nodes,parent){
+    for(const n of nodes){
+      if(n.nodeType===3){
+        const parts=n.textContent.split(' ');
+        parts.forEach((word,i)=>{
+          addWord(word,parent);
+          if(i<parts.length-1)addSpace(parent);
+        });
+      }else{
+        const clone=document.createElement(n.tagName);
+        clone.className=n.className;
+        parent.appendChild(clone);
+        walk([...n.childNodes],clone);
+      }
+    }
+  }
+  walk(src,vis);
+  el.textContent='';el.appendChild(sr);el.appendChild(vis);
+  el.classList.add('type');
+  return chars;
+}
+
 function splitBlur(el){
   const text=el.textContent;
   const html=el.innerHTML;
@@ -937,9 +1032,10 @@ function splitBlur(el){
 
 const bands=[...document.querySelectorAll('.band')].map((el,i)=>{
   const entrance=el.dataset.entrance;
-  const target=el.querySelector('.split-chars, .split-words, .split-blur');
+  const target=el.querySelector('.split-chars, .split-words, .split-blur, .split-type');
   if(target){
-    if(entrance==='blur'){el.classList.add('e-blur');splitBlur(target)}
+    if(entrance==='type'){el.classList.add('e-type')}
+    else if(entrance==='blur'){el.classList.add('e-blur');splitBlur(target)}
     else if(entrance==='drift'){el.classList.add('e-drift');splitChars(target,'drift',101+i)}
     else if(entrance==='grid'){el.classList.add('e-grid');splitChars(target,'grid',211+i)}
     else if(entrance==='scatter'){el.classList.add('e-scatter');splitChars(target,'scatter',307+i)}
@@ -1111,6 +1207,83 @@ function failVideo(){
   if(ringWrap){ringWrap.innerHTML='';ringWrap.appendChild(makeScrollChevron());ringWrap.style.opacity=''}
 }
 
+/* ============ Intro-Choreografie beim ersten Laden ============
+   Ablauf: Hintergrund faded ein, Lichtlinien wachsen nach unten,
+   Kicker und Headline werden Zeichen fuer Zeichen geschrieben,
+   danach Linie, Lauftext und Schaltflaechen. Laeuft genau einmal. */
+let introDone=false,introRaf=null,finishIntro=null;
+const INTRO={lines:200, kicker:300, kickerPer:18,
+             head:1050, headPer:26, rule:0, lead:0, cta:0};
+function runIntro(){
+  if(introDone)return;
+  introDone=true;
+  const stage=document.getElementById('stage');
+  const b1=bands[0].el;
+  const kickerEl=b1.querySelector('.typeline');
+  const headEl=b1.querySelector('.split-type');
+  const lines=document.querySelector('.intro-lines');
+  const kChars=kickerEl?splitType(kickerEl):[];
+  const hChars=headEl?splitType(headEl):[];
+  const showAll=()=>{
+    [...kChars,...hChars].forEach(c=>{if(c)c.classList.add('on')});
+    if(kickerEl)kickerEl.classList.remove('caret');
+    if(headEl)headEl.classList.remove('caret');
+    b1.classList.remove('band-intro');
+    if(lines)lines.classList.add('in');
+    stage.classList.remove('intro-armed');
+  };
+  finishIntro=()=>{
+    if(introRaf!==null){cancelAnimationFrame(introRaf);introRaf=null}
+    showAll();
+  };
+  if(reduceQuery.matches||!scrubOn){showAll();return}
+
+  b1.classList.add('band-intro');
+  stage.classList.add('intro-armed');
+  /* Endzeiten aus der Zeichenzahl ableiten, damit nichts ueberlappt */
+  const kEnd=INTRO.kicker+kChars.length*INTRO.kickerPer;
+  const hStart=Math.max(INTRO.head,kEnd+200);
+  const hEnd=hStart+hChars.length*INTRO.headPer;
+  INTRO.rule=hEnd+140; INTRO.lead=INTRO.rule+200; INTRO.cta=INTRO.lead+180;
+  const total=INTRO.cta+600;
+
+  requestAnimationFrame(()=>{
+    stage.classList.remove('intro-armed');   /* Schleier blendet ueber CSS aus */
+  });
+  const t0=performance.now();
+  let kShown=-1,hShown=-1,phase=0;
+  function step(now){
+    const t=now-t0;
+    if(t>=INTRO.lines&&lines&&!lines.classList.contains('in'))lines.classList.add('in');
+    if(t>=INTRO.kicker&&kickerEl){
+      if(!kickerEl.classList.contains('caret')&&kShown<kChars.length)kickerEl.classList.add('caret');
+      const n=Math.min(kChars.length,Math.floor((t-INTRO.kicker)/INTRO.kickerPer));
+      if(n>kShown){for(let i=Math.max(0,kShown);i<n;i++)if(kChars[i])kChars[i].classList.add('on');kShown=n}
+      if(kShown>=kChars.length)kickerEl.classList.remove('caret');
+    }
+    if(t>=hStart&&headEl){
+      if(!headEl.classList.contains('caret')&&hShown<hChars.length)headEl.classList.add('caret');
+      const n=Math.min(hChars.length,Math.floor((t-hStart)/INTRO.headPer));
+      if(n>hShown){for(let i=Math.max(0,hShown);i<n;i++)if(hChars[i])hChars[i].classList.add('on');hShown=n}
+      if(hShown>=hChars.length)headEl.classList.remove('caret');
+    }
+    if(phase<1&&t>=INTRO.rule){phase=1;b1.classList.add('rule-in')}
+    if(phase<2&&t>=INTRO.lead){phase=2;b1.classList.add('lead-in')}
+    if(phase<3&&t>=INTRO.cta){phase=3;b1.classList.remove('band-intro')}
+    if(t<total){introRaf=requestAnimationFrame(step)}
+    else{introRaf=null;showAll()}
+  }
+  introRaf=requestAnimationFrame(step);
+  /* Wer sofort scrollt, bekommt den Endzustand statt einer halben Animation */
+  const skip=()=>{
+    if(introRaf!==null){cancelAnimationFrame(introRaf);introRaf=null}
+    showAll();removeEventListener('scroll',onFirstScroll);
+  };
+  function onFirstScroll(){if(scrollY>40)skip()}
+  addEventListener('scroll',onFirstScroll,{passive:true});
+  setTimeout(()=>removeEventListener('scroll',onFirstScroll),total+400);
+}
+
 function initHeroOnce(){
   if(heroInit)return;
   heroInit=true;
@@ -1130,6 +1303,7 @@ function initHeroOnce(){
   loadRampId=requestAnimationFrame(ramp);
   /* Sicherung: falls rAF gedrosselt ist, Band 1 nach 2.5s fertig setzen */
   setTimeout(()=>{if(loadK<1){loadK=1;updateCaptions(shown)}},2500);
+  runIntro();
 }
 
 /* Fünf Gates, live, identisch mit dem CSS */
@@ -1366,6 +1540,7 @@ if(form){
 
 /* ============ Reduced Motion, live in beide Richtungen ============ */
 function pinToFinalStates(){
+  if(finishIntro)finishIntro();
   threadPinned=true;
   if(threadPath)threadPath.style.strokeDashoffset=0;
   document.querySelectorAll('.rev').forEach(el=>el.classList.add('in','settled'));
