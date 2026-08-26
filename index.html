@@ -12,10 +12,7 @@
 <meta property="og:url" content="https://nicolugip-oss.github.io/Luginb-hl-Consulting/">
 <meta property="og:image" content="https://nicolugip-oss.github.io/Luginb-hl-Consulting/assets/hero-ending.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%230B111C'/%3E%3Cpath d='M17 7 C9 12 25 15 15 21 L15 36 Q15 39 18 39 L38 39' fill='none' stroke='%234FD4EA' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap"></noscript>
+<link rel="stylesheet" href="assets/fonts.css">
 <style>
 /* ============ Tokens ============ */
 :root{
@@ -341,6 +338,10 @@ main{position:relative}
 .pcard .media::after{content:"";position:absolute;inset:0;
   background:radial-gradient(circle at 90% 10%, rgba(8,13,22,.9) 0%, rgba(8,13,22,.5) 26%, rgba(8,13,22,0) 52%),
              linear-gradient(180deg,rgba(10,15,25,.1) 0%,rgba(10,15,25,.55) 78%,rgba(14,21,34,.95) 100%)}
+.pcard .origin{position:absolute;top:20px;left:22px;z-index:2;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-primary);background:rgba(8,13,22,.72);border:1px solid rgba(148,166,190,.24);
+  border-radius:999px;padding:5px 12px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .pcard .num{position:absolute;top:16px;right:22px;z-index:2;
   font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,3vw,2.6rem);
   color:rgba(237,242,248,.9);text-shadow:0 3px 18px rgba(4,7,12,.75);letter-spacing:-.02em}
@@ -348,6 +349,9 @@ main{position:relative}
 .pcard .meta{font-family:var(--mono);font-size:.72rem;color:var(--text-secondary);letter-spacing:.13em;text-transform:uppercase;display:block}
 .pcard h3{font-size:1.24rem;margin:10px 0 10px}
 .pcard p{color:var(--text-secondary);font-size:.97rem}
+.pcard .result{display:flex;align-items:flex-start;gap:9px;margin-top:16px;
+  color:var(--text-primary);font-size:.94rem;font-weight:500}
+.pcard .result svg{flex:0 0 auto;color:var(--accent);margin-top:4px}
 .pcard .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .tag{font-family:var(--mono);font-size:.71rem;color:var(--accent);border:1px solid var(--accent-muted);border-radius:999px;padding:4px 12px;letter-spacing:.06em;background:rgba(79,212,234,.05)}
 
@@ -380,7 +384,15 @@ textarea{min-height:120px;resize:vertical}
 .attach-note svg{color:var(--accent);margin-right:6px}
 .form-ok{display:none;margin-top:8px;color:var(--accent);font-size:.95rem}
 form.sent .form-ok{display:block}
-.contact-alt{margin-top:22px;font-size:.92rem;color:var(--text-secondary)}
+.contact-ways{display:grid;gap:12px;margin-top:24px;max-width:460px}
+.way{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:14px;
+  border:1px solid var(--line);background:rgba(11,17,28,.45);color:var(--text-primary);
+  transition:border-color .35s var(--ease),background .35s var(--ease)}
+.way:hover{border-color:rgba(79,212,234,.4);background:rgba(11,17,28,.7);color:var(--text-primary)}
+.way svg{flex:0 0 auto;color:var(--accent);margin-top:3px}
+.way span{display:flex;flex-direction:column;gap:3px}
+.way strong{font-weight:600;font-size:1rem}
+.way em{font-style:normal;font-size:.85rem;color:var(--text-secondary)}
 
 /* Footer */
 footer{margin-top:110px;border-top:1px solid var(--line);padding:44px 6vw 54px;
@@ -672,8 +684,12 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 
   <!-- Projekte -->
   <section class="section rev" id="projekte">
-    <p class="kicker part">Ausgewählte Arbeiten</p>
-    <h2 class="part">Projekte, an denen ich gearbeitet habe.</h2>
+    <p class="kicker part">Woher meine Erfahrung kommt</p>
+    <h2 class="part">Projekte aus meiner Lehre.</h2>
+    <p class="lede part"><strong>Wichtig zur Einordnung:</strong> Diese Projekte habe ich als Lernender bei meinen Arbeitgebern und in der Schule gemacht, nicht als externer Berater. Ich hatte bisher keine Consulting-Kunden. Diese Erfahrung bringe ich in jeden Auftrag mit, und Ihr Auftrag wäre einer der ersten.</p>
+    <!-- Sobald du für ein Projekt eine belegbare Zahl hast, ersetze die Zeile in <p class="result">
+         durch die konkrete Angabe, zum Beispiel: "Rund 4 Stunden Handarbeit pro Woche weniger."
+         Nenne nur Zahlen, die du im Gespräch auch belegen kannst. -->
     <div class="pgrid">
       <article class="pcard part">
         <div class="media" aria-hidden="true">
@@ -685,11 +701,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
             <circle cx="300" cy="62" r="6" fill="currentColor"/>
           </g></svg>
           <span class="num">01.</span>
+          <span class="origin">Aus der Lehre</span>
         </div>
         <div class="body">
           <span class="meta">blue Entertainment AG · mit Marco Polo</span>
           <h3>Prozessoptimierung blue Sport</h3>
           <p>Abläufe im Sportgeschäft von blue durchleuchtet und vereinfacht: weniger Handarbeit, klarere Zuständigkeiten, sauber dokumentierte Prozesse.</p>
+          <p class="result"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Weniger manuelle Schritte, klar zugeordnete Zuständigkeiten.</span></p>
           <div class="tags"><span class="tag">Prozessoptimierung</span><span class="tag">Sportgeschäft</span></div>
         </div>
       </article>
@@ -706,11 +724,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
             <circle cx="236" cy="52" r="5" fill="currentColor"/>
           </g></svg>
           <span class="num">02.</span>
+          <span class="origin">Aus der Lehre</span>
         </div>
         <div class="body">
           <span class="meta">Swisscom · Finanzen</span>
           <h3>Abrechnungsprozess optimiert</h3>
           <p>Einen Geschäftsprozess im Bereich Abrechnungen aufgenommen, analysiert und verschlankt: klarere Schritte, weniger Doppelarbeit, kürzere Wege.</p>
+          <p class="result"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ein dokumentierter Ablauf mit weniger Doppelspurigkeiten.</span></p>
           <div class="tags"><span class="tag">Finanzen</span><span class="tag">Abrechnungen</span><span class="tag">Prozessoptimierung</span></div>
         </div>
       </article>
@@ -725,11 +745,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
             <circle cx="106" cy="75" r="3.5" fill="currentColor"/><circle cx="214" cy="75" r="3.5" fill="currentColor"/>
           </g></svg>
           <span class="num">03.</span>
+          <span class="origin">Aus der Lehre</span>
         </div>
         <div class="body">
           <span class="meta">Swisscom · Security</span>
           <h3>BPMN für eine Security-Software</h3>
           <p>Geschäftsprozesse rund um eine Security-Software aufgenommen und als BPMN-Diagramme modelliert: aus gelebten Abläufen werden klare Modelle, die alle verstehen.</p>
+          <p class="result"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Diagramme, die im Team als gemeinsame Grundlage dienen.</span></p>
           <div class="tags"><span class="tag">BPMN 2.0</span><span class="tag">Prozessaufnahme</span><span class="tag">Security</span></div>
         </div>
       </article>
@@ -745,11 +767,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
             <path d="M258 40 v104" opacity=".35"/>
           </g></svg>
           <span class="num">04.</span>
+          <span class="origin">Schulprojekt</span>
         </div>
         <div class="body">
           <span class="meta">Schulprojekt · Anforderungen</span>
           <h3>Von der Persona zum Akzeptanzkriterium</h3>
           <p>Einmal quer durchs Anforderungshandwerk: Personas entwickelt, User Stories geschrieben, Abläufe als BPMN modelliert und Akzeptanzkriterien formuliert, mit denen ein Team direkt bauen kann.</p>
+          <p class="result"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ein vollständiges Anforderungspaket, mit dem ein Team bauen kann.</span></p>
           <div class="tags"><span class="tag">User Stories</span><span class="tag">Personas</span><span class="tag">Akzeptanzkriterien</span></div>
         </div>
       </article>
@@ -763,7 +787,17 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <div class="faq part">
       <details>
         <summary>Warum sollte ich einem 17-Jährigen vertrauen?</summary>
-        <p class="a">Müssen Sie nicht. Der Prozess-Check ist kostenlos: Sie sehen zuerst, was ich sehe, und entscheiden danach. Dazu kommt eine Ausbildung mitten in den Prozessen eines der grössten Schweizer Tech-Unternehmen.</p>
+        <p class="a">Müssen Sie nicht, und ich habe auch noch keine Kundenreferenzen, die für mich sprechen. Was ich habe: eine Ausbildung mitten in den Prozessen eines der grössten Schweizer Tech-Unternehmen, und einen kostenlosen Prozess-Check. Sie sehen zuerst, was ich sehe, und entscheiden danach.</p>
+      </details>
+      <details>
+        <summary>Was passiert mit unseren internen Daten?</summary>
+        <p class="a">Sie bleiben bei Ihnen. Ich unterschreibe Ihre Geheimhaltungsvereinbarung, bevor ich den ersten Ablauf sehe. Unterlagen bearbeite ich nur so lange, wie der Auftrag läuft, und lösche sie danach auf Wunsch nachweislich. Namen, Zahlen und interne Details tauchen weder in Referenzen noch auf dieser Website auf, ausser Sie geben mir das ausdrücklich frei.</p>
+      </details>
+      <!-- Bitte anpassen, sobald geklärt: Rechtsform, Handelsregister- oder UID-Eintrag,
+           Berufshaftpflicht. Schreib hier nur, was tatsächlich zutrifft. -->
+      <details>
+        <summary>Bist du offiziell angemeldet und versichert?</summary>
+        <p class="a">Ich bin dabei, mich als Einzelunternehmen mit Sitz in Zürich anzumelden, und kläre den Versicherungsschutz für Beratungsmandate ab. Den aktuellen Stand sage ich Ihnen im Erstgespräch offen und ungeschönt, bevor wir über einen Auftrag reden. Fest zusagen kann ich Ihnen schon jetzt: Geheimhaltung, Festpreis und klare Liefertermine, schriftlich.</p>
       </details>
       <details>
         <summary>Was kostet das?</summary>
@@ -812,8 +846,18 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
           </div>
           <p class="form-ok" role="status">Ihr Mailprogramm ist offen. Dateien können Sie dort direkt anhängen, dann auf Senden drücken.</p>
         </form>
-        <p class="hint">Der Knopf öffnet Ihr Mailprogramm. Die Nachricht geht direkt an nico.luginbuehl@bluewin.ch, sonst nirgendwohin.</p>
-        <p class="contact-alt">Lieber LinkedIn? <a href="https://www.linkedin.com/in/nico-yann-luginb%C3%BChl-805248322/" rel="noopener" target="_blank">Hier finden Sie mich.</a></p>
+        <p class="hint">Der Knopf öffnet Ihr Mailprogramm. Die Nachricht geht direkt an nico.luginbuehl@bluewin.ch, sonst nirgendwohin. Diese Website speichert nichts und setzt keine Cookies. Was Sie mir schreiben, behandle ich vertraulich.</p>
+        <!-- Telefonnummer bitte durch deine echte ersetzen (auch im Impressum). -->
+        <div class="contact-ways">
+          <a class="way" href="tel:+41790000000">
+            <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            <span><strong>079 000 00 00</strong><em>Lieber telefonieren? Werktags ab 18 Uhr, am Wochenende jederzeit.</em></span>
+          </a>
+          <a class="way" href="https://www.linkedin.com/in/nico-yann-luginb%C3%BChl-805248322/" rel="noopener" target="_blank">
+            <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v10M5 5.5v.01M10 19v-6a3 3 0 0 1 6 0v6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <span><strong>LinkedIn</strong><em>Profil ansehen und direkt schreiben.</em></span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -828,10 +872,12 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <span>© 2026 Luginbühl Consulting · Zürich</span>
   </span>
   <span class="links">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
     <a href="https://www.linkedin.com/in/nico-yann-luginb%C3%BChl-805248322/" rel="noopener" target="_blank">LinkedIn</a>
     <a href="mailto:nico.luginbuehl@bluewin.ch">E-Mail</a>
   </span>
-  <span class="disclosure">Die Visuals auf dieser Seite sind KI-generiert.</span>
+  <span class="disclosure">Die Visuals auf dieser Seite sind KI-generiert. Diese Website setzt keine Cookies, bindet keine externen Dienste ein und wertet Ihr Verhalten nicht aus.</span>
 </footer>
 
 <script>
