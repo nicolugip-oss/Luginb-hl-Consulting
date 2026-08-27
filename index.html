@@ -141,7 +141,7 @@ nav.on-paper .nav-pill{border-color:rgba(241,238,230,.22);box-shadow:0 10px 30px
 @media (max-width:520px){.brand span{display:none}}
 
 /* ============ Hero (Scrub) ============ */
-.hero{position:relative;height:380vh;background:var(--night)}
+.hero{position:relative;height:300vh;background:var(--night)}
 .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--night)}
 .poster,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .poster{background-size:cover;background-position:center}
@@ -201,14 +201,16 @@ nav.on-paper .nav-pill{border-color:rgba(241,238,230,.22);box-shadow:0 10px 30px
   opacity:calc(.25 + .75*var(--k,1));
   inset:-4%;
   background:radial-gradient(ellipse 46% 58% at 26% 46%, rgba(8,10,13,var(--scrimA,.66)) 0%, rgba(8,10,13,calc(var(--scrimA,.66)*.66)) 46%, rgba(8,10,13,0) 76%)}
-.band-settle::before{background:radial-gradient(ellipse 84% 68% at 50% 42%, rgba(8,10,13,var(--scrimA,.62)) 0%, rgba(8,10,13,calc(var(--scrimA,.62)*.72)) 50%, rgba(8,10,13,0) 80%)}
-.band-settle::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:rgba(10,12,15,.44);opacity:var(--k,0)}
-.band-settle .inner{left:50%;top:50%;transform:translate(-50%,-52%);text-align:center;max-width:60ch}
-.band-settle .h{max-width:none}
-.band-settle .settle-sub{margin:24px auto 0;max-width:44ch;color:var(--light);font-size:1.08rem;opacity:var(--ks,0);transform:translateY(calc((1 - var(--ks,0))*14px))}
-.band-settle .settle-cta{margin-top:34px;opacity:var(--kb,0);transform:translateY(calc((1 - var(--kb,0))*14px))}
-.band-settle .settle-cta .btn{pointer-events:auto}
+/* Die letzte Tafel steht bis zum Schluss, also ueber den hellsten
+   Videobildern. Ein linksbuendiger Verlauf deckt die ganze Textzeile ab;
+   der Kreis oben reichte nur bis zur Haelfte. */
+.band-close::before{background:
+  linear-gradient(100deg, rgba(8,10,13,var(--scrimA,.88)) 0%,
+                          rgba(8,10,13,calc(var(--scrimA,.88)*.88)) 40%,
+                          rgba(8,10,13,calc(var(--scrimA,.88)*.44)) 64%,
+                          rgba(8,10,13,0) 84%)}
+.band-close::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:rgba(8,10,13,.3);opacity:var(--k,0)}
 
 /* Zeichen-Entrances: nur transform + opacity, gescrubbt ueber --k */
 .w{display:inline-block;white-space:nowrap}
@@ -552,7 +554,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .untangle-stage{--up:1}
   .pcard:hover .media::before{transform:none}
   .pcard:hover .motif .flow,.pcard:hover .motif .flow *{stroke-dasharray:none}
-  .band-settle .settle-sub,.band-settle .settle-cta{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -592,7 +593,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <div class="intro-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="intro-veil" id="intro-veil" aria-hidden="true"></div>
 
-    <div class="band band-left" data-a="0" data-b="0.34" data-entrance="type" style="--scrimA:.72">
+    <div class="band band-left" data-a="0" data-b="0.42" data-entrance="type" style="--scrimA:.72">
       <div class="inner">
         <p class="kicker"><span class="dot" aria-hidden="true"></span><span class="typeline">Prozessanalyse und Optimierung · Zürich</span></p>
         <h1 class="split-type">Ihre Abläufe. <em class="hl">Endlich klar.</em></h1>
@@ -607,7 +608,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       </div>
     </div>
 
-    <div class="band band-left" data-a="0.38" data-b="0.66" data-entrance="drift" style="--scrimA:.68">
+    <div class="band band-left band-close" data-a="0.48" data-b="1" data-entrance="drift" style="--scrimA:.88">
       <div class="inner">
         <p class="step-tag">Das Problem</p>
         <p class="h split-chars">Excel hier, Mails dort, Wissen nur in Köpfen.</p>
@@ -615,17 +616,9 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       </div>
     </div>
 
-    <div class="band band-settle" data-a="0.70" data-b="1" data-entrance="rise" style="--scrimA:.8">
-      <div class="inner">
-        <p class="step-tag">Die Lösung</p>
-        <p class="h split-words">Vom Knoten zur klaren Linie.</p>
-        <p class="settle-sub">Prozessanalyse, Optimierung und dosierte Digitalisierung für KMU und Teams.</p>
-        <p class="settle-cta"><a class="btn" href="#kontakt">Kostenloser Prozess‑Check</a></p>
-      </div>
-    </div>
 
     <div class="beats" aria-hidden="true">
-      <span class="beat"><i></i></span><span class="beat"><i></i></span><span class="beat"><i></i></span>
+      <span class="beat"><i></i></span><span class="beat"><i></i></span>
     </div>
 
     <div class="scroll-cue" id="scroll-cue" aria-hidden="true">
@@ -1244,7 +1237,7 @@ const bands=[...document.querySelectorAll('.band')].map((el,i)=>{
     else if(entrance==='scatter'){el.classList.add('e-scatter');splitChars(target,'scatter',307+i)}
     else if(entrance==='rise'){el.classList.add('e-rise');splitChars(target,'rise',401+i)}
   }
-  return {el,a:+el.dataset.a,b:+el.dataset.b,op:-1,k:-1,ks:-1,kb:-1,f:-1,settle:el.classList.contains('band-settle')};
+  return {el,a:+el.dataset.a,b:+el.dataset.b,op:-1,k:-1,f:-1};
 });
 const beatEls=[...document.querySelectorAll('.beat i')];
 
@@ -1285,6 +1278,7 @@ function heroProgress(){
 }
 
 video.addEventListener('seeked',()=>{
+  if(seekBusy)noteSeekTime(performance.now()-seekT0);
   seekBusy=false;
   if(pendingTime!==null){const t=pendingTime;pendingTime=null;requestSeek(t,true)}
 });
@@ -1298,7 +1292,7 @@ function requestSeek(t,force){
   if(!video.duration)return;
   if(!force&&lastSeek>=0&&Math.abs(t-lastSeek)<SEEK_EPS)return;
   if(seekBusy){pendingTime=t;return}
-  seekBusy=true;lastSeek=t;
+  seekBusy=true;lastSeek=t;seekT0=performance.now();
   video.currentTime=t;
 }
 
@@ -1326,12 +1320,6 @@ function updateCaptions(p){
       const f=+clamp((p-a)/(b-a),0,1).toFixed(3);
       if(Math.abs(f-band.f)>=0.01||band.f<0){band.f=f;beatEls[bi].style.setProperty('--f',f)}
     }
-    if(band.settle){
-      const ks=+clamp((k-0.66)*4,0,1).toFixed(3);
-      const kb=+clamp((k-0.78)*5,0,1).toFixed(3);
-      if(Math.abs(ks-band.ks)>=0.01||band.ks<0){band.ks=ks;band.el.style.setProperty('--ks',ks)}
-      if(Math.abs(kb-band.kb)>=0.01||band.kb<0){band.kb=kb;band.el.style.setProperty('--kb',kb)}
-    }
   }
 }
 
@@ -1348,6 +1336,7 @@ function tick(now){
 }
 function onScroll(){
   target=heroProgress();
+  if(target>0.004)handOverBreath();
   if(rafId===null&&heroOnScreen)rafId=requestAnimationFrame(tick);
   if(target<=0.004)armBreath();
   const cue=document.getElementById('scroll-cue');
@@ -1355,19 +1344,49 @@ function onScroll(){
   if(cue&&gone!==cueGone){cueGone=gone;cue.classList.toggle('gone',gone)}
 }
 
-/* Leerlauf-Atmen: der Knoten lebt, bevor gescrollt wird */
-let breathId=null,breathT0=null,cueGone=false;
+/* Leerlauf: der Knoten dreht sich, bevor gescrollt wird.
+   Hin und zurueck ueber die erste knappe halbe Sekunde des Videos, in der
+   sich der Knaeuel dreht, ohne sich schon zu loesen. Ein Kosinus laeuft an
+   den Enden weich aus, deshalb sieht man keinen Sprung beim Umkehren.
+   BREATH_AMP ist der Anteil der Videolaenge, BREATH_SEC die halbe Periode. */
+const BREATH_AMP=0.078, BREATH_SEC=2.6;
+let breathId=null,breathT0=null,cueGone=false,breathOff=0,breathAmp=BREATH_AMP,breathing=false;
+/* Selbstbremse. Ob ein Geraet die Drehung traegt, weiss man erst auf dem
+   Geraet: gemessen wird, wie lange das Suchen eines Videobildes wirklich
+   dauert. Bleibt das langsam, wird die Drehung kleiner oder ganz
+   abgeschaltet, statt zu stocken. Gemessen wird nur im Leerlauf. */
+let seekT0=0,latSum=0,latN=0;
+function noteSeekTime(ms){
+  if(!breathing||breathAmp===0)return;
+  latSum+=ms;latN++;
+  if(latN<24)return;
+  const avg=latSum/latN;
+  /* Schwellen gemessen: ein Suchlauf kostete im langsamsten Testgeraet
+     26 ms, dort lief die volle Drehung noch mit 60 Bildern pro Sekunde.
+     Bei der vollen Drehung wird alle 72 ms ein neues Bild faellig. */
+  if(avg>65){breathAmp=0;requestSeek(0,true)}
+  else if(avg>38){breathAmp=BREATH_AMP*0.4}
+  latN=0;latSum=0;
+}
 function breatheTick(now){
-  breathId=null;
+  breathId=null;breathing=false;
   if(!scrubOn||!heroOnScreen||document.hidden||target>0.004||!video.duration||reduceQuery.matches)return;
+  if(breathAmp===0)return;
   if(breathT0===null)breathT0=now;
   const t=(now-breathT0)/1000;
-  const off=(1-Math.cos(t*Math.PI/3))/2*0.045;
-  requestSeek(off*video.duration);
+  breathOff=(1-Math.cos(t*Math.PI/BREATH_SEC))/2*breathAmp;
+  breathing=true;
+  requestSeek(breathOff*video.duration);
   breathId=requestAnimationFrame(breatheTick);
 }
 function armBreath(){
   if(breathId===null)breathId=requestAnimationFrame(breatheTick);
+}
+/* Beim ersten Scrollen uebernimmt die Scroll-Steuerung dort, wo die Drehung
+   gerade steht. Ohne das springt das Bild vom Drehpunkt zurueck auf Bild eins. */
+function handOverBreath(){
+  if(breathOff>0.0005&&shown<breathOff){shown=breathOff}
+  breathOff=0;breathT0=null;
 }
 
 /* Blob-Loader mit Ring */
@@ -1542,7 +1561,7 @@ function enableScrub(){
   if(scrubOn)return;scrubOn=true;
   initHeroOnce();
   addEventListener('scroll',onScroll,{passive:true});
-  bands.forEach(b=>{b.op=-1;b.k=-1;b.ks=-1;b.kb=-1;b.f=-1});
+  bands.forEach(b=>{b.op=-1;b.k=-1;b.f=-1});
   target=heroProgress();shown=target;
   updateCaptions(shown);
   onScroll();
@@ -1825,7 +1844,6 @@ function pinToFinalStates(){
   bands.forEach(b=>{
     b.el.style.opacity='';b.el.style.visibility='';
     b.el.style.setProperty('--k',1);
-    if(b.settle){b.el.style.setProperty('--ks',1);b.el.style.setProperty('--kb',1)}
   });
 }
 reduceQuery.addEventListener('change',e=>{
