@@ -1,13 +1,15 @@
-/* Gemeinsames Stylesheet fuer Impressum und Datenschutzerklaerung. */
+/* Gemeinsames Stylesheet fuer Impressum und Datenschutzerklaerung.
+   Gleiche Farbwelt wie die Startseite: Papier, Tinte, eine Signalfarbe. */
 :root{
-  --canvas:#0B111C;
-  --panel-2:#0E1522;
-  --accent:#4FD4EA;
-  --accent-hover:#7FE3F4;
-  --line:rgba(148,166,190,.16);
-  --line-strong:rgba(148,166,190,.38);
-  --text-primary:#EDF2F8;
-  --text-secondary:#A3B1C4;
+  --paper:#F2EFE7;
+  --paper-2:#E9E4D8;
+  --ink:#16191D;
+  --ink-2:#565D65;
+  --rule:#CFC7B6;
+  --rule-2:#B3A992;
+  --signal:#B4331C;
+  --signal-deep:#8E2412;
+  --night:#14161A;
   --ease:cubic-bezier(.22,.7,.24,1);
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,Arial,sans-serif;
   --body:"Instrument Sans",system-ui,sans-serif;
@@ -16,47 +18,49 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{overflow-x:hidden;overflow-x:clip}
 body{
-  background:
-    radial-gradient(64% 52% at 18% 8%, rgba(79,212,234,.10), transparent 62%),
-    radial-gradient(58% 50% at 88% 82%, rgba(58,110,165,.12), transparent 66%),
-    var(--canvas);
-  background-attachment:fixed;
-  color:var(--text-primary);
+  background:var(--paper);
+  color:var(--ink);
   font-family:var(--body);
   font-size:17px;line-height:1.68;
   -webkit-font-smoothing:antialiased;
 }
-h1,h2{font-family:var(--display);font-weight:700;line-height:1.16;letter-spacing:-.01em}
-a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(79,212,234,.32);transition:color .3s var(--ease),border-color .3s var(--ease)}
-a:hover{color:var(--accent-hover);border-bottom-color:var(--accent-hover)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+body::after{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+h1,h2{font-family:var(--display);font-weight:700;line-height:1.12;letter-spacing:-.022em}
+a{color:var(--signal);text-decoration:none;border-bottom:1px solid rgba(180,51,28,.34);transition:color .3s var(--ease),border-color .3s var(--ease)}
+a:hover{color:var(--signal-deep);border-bottom-color:var(--signal-deep)}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px}
 
-.topbar{padding:26px clamp(20px,5vw,48px);border-bottom:1px solid var(--line)}
-.brand{display:inline-flex;align-items:center;gap:11px;color:var(--text-primary);
-  font-family:var(--display);font-weight:700;font-size:1.05rem;border-bottom:none}
-.brand:hover{color:var(--text-primary)}
-.brand svg{display:block}
+.topbar{background:var(--night);padding:20px clamp(20px,5vw,48px)}
+.brand{display:inline-flex;align-items:center;gap:11px;color:var(--paper);
+  font-family:var(--display);font-weight:700;font-size:1.02rem;letter-spacing:-.01em;border-bottom:none}
+.brand:hover{color:var(--paper)}
+.brand svg{display:block;color:#F0785A}
 
-main{max-width:760px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,32px) 96px}
-.kicker{font-family:var(--mono);font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:16px}
+main{max-width:740px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,32px) 96px}
+.kicker{display:flex;align-items:center;gap:14px;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--signal);margin-bottom:18px}
+.kicker::after{content:"";flex:1 1 auto;max-width:200px;height:1px;background:var(--rule)}
 h1{font-size:clamp(2rem,4.4vw,2.9rem);margin-bottom:14px}
-.updated{color:var(--text-secondary);font-size:.9rem;margin-bottom:44px}
-h2{font-size:1.22rem;margin:44px 0 12px}
-p{margin-bottom:14px;color:var(--text-secondary)}
-p strong{color:var(--text-primary);font-weight:600}
-ul{margin:0 0 16px 20px;color:var(--text-secondary)}
+.updated{color:var(--ink-2);font-size:.89rem;margin-bottom:40px;padding-bottom:26px;border-bottom:1px solid var(--rule)}
+h2{font-size:1.16rem;margin:44px 0 12px}
+p{margin-bottom:14px;color:var(--ink-2)}
+p strong{color:var(--ink);font-weight:600}
+ul{margin:0 0 16px 20px;color:var(--ink-2)}
 li{margin-bottom:7px}
-.card{background:var(--panel-2);border:1px solid var(--line);border-radius:18px;
-  padding:26px 28px;margin-bottom:16px}
+.card{background:var(--paper-2);border:1px solid var(--rule);border-radius:2px;
+  padding:24px 26px;margin-bottom:16px}
+.card p{color:var(--ink)}
 .card p:last-child{margin-bottom:0}
-.note{border-left:2px solid var(--accent);padding:4px 0 4px 18px;margin:22px 0;color:var(--text-secondary)}
-.back{display:inline-flex;align-items:center;gap:8px;margin-top:52px;border-bottom:none;
-  border:1px solid var(--line-strong);border-radius:999px;padding:11px 22px;
-  color:var(--text-primary);font-size:.95rem;transition:border-color .3s var(--ease),background .3s var(--ease)}
-.back:hover{border-color:var(--accent);background:rgba(79,212,234,.08);color:var(--text-primary)}
-footer{border-top:1px solid var(--line);padding:32px clamp(20px,5vw,48px) 44px;
-  color:var(--text-secondary);font-size:.86rem;display:flex;gap:22px;flex-wrap:wrap}
-footer a{color:var(--text-secondary);border-bottom-color:rgba(148,166,190,.28)}
-footer a:hover{color:var(--text-primary)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.note{border-left:2px solid var(--signal);padding:4px 0 4px 18px;margin:26px 0;color:var(--ink-2)}
+.back{display:inline-flex;align-items:center;gap:9px;margin-top:52px;border-bottom:none;
+  border:1px solid var(--rule-2);border-radius:2px;padding:12px 22px;
+  color:var(--ink);font-size:.94rem;transition:border-color .3s var(--ease),background .3s var(--ease),color .3s var(--ease)}
+.back:hover{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+footer{background:var(--night);padding:32px clamp(20px,5vw,48px) 40px;
+  color:#9AA0A8;font-size:.85rem;display:flex;gap:24px;flex-wrap:wrap}
+footer a{color:var(--paper);border-bottom-color:rgba(242,239,231,.3)}
+footer a:hover{color:#F0785A;border-bottom-color:#F0785A}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}
+  body::after{opacity:.035}}
