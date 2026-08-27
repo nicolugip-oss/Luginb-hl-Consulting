@@ -10,6 +10,9 @@
   --signal:#B4331C;
   --signal-deep:#8E2412;
   --night:#14161A;
+  --r-xs:8px;
+  --r-sm:12px;
+  --r-md:18px;
   --ease:cubic-bezier(.22,.7,.24,1);
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,Arial,sans-serif;
   --body:"Instrument Sans",system-ui,sans-serif;
@@ -29,7 +32,7 @@ body::after{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;opac
 h1,h2{font-family:var(--display);font-weight:700;line-height:1.12;letter-spacing:-.022em}
 a{color:var(--signal);text-decoration:none;border-bottom:1px solid rgba(180,51,28,.34);transition:color .3s var(--ease),border-color .3s var(--ease)}
 a:hover{color:var(--signal-deep);border-bottom-color:var(--signal-deep)}
-:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:var(--r-xs)}
 
 .topbar{background:var(--night);padding:20px clamp(20px,5vw,48px)}
 .brand{display:inline-flex;align-items:center;gap:11px;color:var(--paper);
@@ -49,13 +52,13 @@ p{margin-bottom:14px;color:var(--ink-2)}
 p strong{color:var(--ink);font-weight:600}
 ul{margin:0 0 16px 20px;color:var(--ink-2)}
 li{margin-bottom:7px}
-.card{background:var(--paper-2);border:1px solid var(--rule);border-radius:2px;
+.card{background:var(--paper-2);border:1px solid var(--rule);border-radius:var(--r-md);
   padding:24px 26px;margin-bottom:16px}
 .card p{color:var(--ink)}
 .card p:last-child{margin-bottom:0}
 .note{border-left:2px solid var(--signal);padding:4px 0 4px 18px;margin:26px 0;color:var(--ink-2)}
 .back{display:inline-flex;align-items:center;gap:9px;margin-top:52px;border-bottom:none;
-  border:1px solid var(--rule-2);border-radius:2px;padding:12px 22px;
+  border:1px solid var(--rule-2);border-radius:var(--r-sm);padding:12px 22px;
   color:var(--ink);font-size:.94rem;transition:border-color .3s var(--ease),background .3s var(--ease),color .3s var(--ease)}
 .back:hover{border-color:var(--ink);background:var(--ink);color:var(--paper)}
 footer{background:var(--night);padding:32px clamp(20px,5vw,48px) 40px;
