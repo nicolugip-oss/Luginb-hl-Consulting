@@ -127,7 +127,7 @@ nav.on-paper .nav-pill{border-color:rgba(241,238,230,.22);box-shadow:0 10px 30px
   background:var(--ember);opacity:.9}
 @media (prefers-reduced-motion:reduce){.nav-ind{transition:none}}
 
-.btn{display:inline-block;background:var(--signal);color:var(--light);font-weight:600;font-size:.94rem;
+.btn{display:inline-block;background:var(--signal);color:var(--light);font-weight:400;font-size:.95rem;
   padding:13px 24px;border-radius:var(--r-sm);border:none;cursor:pointer;font-family:var(--body);
   letter-spacing:.005em;
   transition:background .28s var(--ease),color .28s var(--ease),transform .28s var(--ease)}
@@ -369,17 +369,33 @@ main{position:relative;counter-reset:sec}
 .about-text p strong{color:var(--light);font-weight:600}
 .timeline{position:relative;border-top:1px solid var(--rule)}
 .t-item{position:relative;padding:22px 0 22px 26px;border-bottom:1px solid var(--rule)}
-.t-item::before{content:"";position:absolute;left:0;top:31px;width:9px;height:1px;background:var(--rule-2)}
-.t-item:first-child::before{width:9px;height:9px;top:27px;border-radius:50%;background:var(--ember)}
+.t-item::before{content:"";position:absolute;left:0;top:27px;width:9px;height:9px;
+  border-radius:50%;background:var(--ember)}
+/* Die aktuelle Station bekommt zusaetzlich einen Ring. */
+.t-item:first-child::after{content:"";position:absolute;left:-4px;top:23px;width:17px;height:17px;
+  border-radius:50%;border:1px solid rgba(240,120,90,.42)}
 .t-item .when{font-family:var(--mono);font-size:.72rem;color:var(--text-secondary);letter-spacing:.08em}
 .t-item h3{font-size:1.02rem;margin:7px 0 4px}
 .t-item p{color:var(--text-secondary);font-size:.93rem;max-width:52ch}
 
 /* Kompetenzen */
-.skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px;max-width:840px}
-.skill{border:1px solid var(--rule-2);border-radius:var(--r-sm);padding:9px 16px;font-size:.92rem;color:var(--light);
-  background:var(--ground-2);transition:border-color .35s var(--ease),background .35s var(--ease),color .35s var(--ease)}
-.skill:hover{border-color:var(--light);background:var(--light);color:var(--ground)}
+.skills{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px;margin-top:44px;max-width:880px}
+/* Beim Zeigen klappt der Begriff auf und erklaert sich in einem Satz.
+   Tastatur und Tippen loesen dasselbe aus wie die Maus. */
+.skill{position:relative;max-width:100%;
+  border:1px solid var(--rule-2);border-radius:var(--r-sm);padding:9px 16px;font-size:.92rem;
+  color:var(--light);background:var(--ground-2);cursor:default;
+  transition:border-color .35s var(--ease),background .35s var(--ease)}
+.skill .s-label{display:block;font-size:.92rem;white-space:nowrap}
+/* Zugeklappt ist die Erklaerung null breit: sonst wuerde ihr Satz die
+   Breite des Begriffs bestimmen und jeder Chip die ganze Zeile fuellen. */
+.skill .s-more{display:block;width:0;max-height:0;opacity:0;overflow:hidden;
+  color:var(--muted);font-size:.86rem;line-height:1.52;
+  transition:width .45s var(--ease),max-height .45s var(--ease),opacity .3s var(--ease),margin-top .45s var(--ease)}
+.skill:hover,.skill:focus{outline:none;border-color:var(--ember);background:var(--ground-3)}
+.skill:hover .s-more,.skill:focus .s-more{width:min(34ch,68vw);max-height:10em;opacity:1;margin-top:9px}
+.skill:focus-visible{box-shadow:0 0 0 2px var(--ember)}
+@media (prefers-reduced-motion:reduce){.skill,.skill .s-more{transition:none}}
 
 /* Projekte */
 .pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;margin-top:52px}
@@ -388,13 +404,28 @@ main{position:relative;counter-reset:sec}
   border:1px solid var(--rule-2);border-radius:var(--r-md);background:var(--ground-2);
   transition:border-color .4s var(--ease)}
 .pcard:hover{border-color:var(--light)}
-.pcard .media{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--night)}
+.pcard .media{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--night);
+  --mx:50%;--my:50%}
 .pcard .media::before{content:"";position:absolute;inset:0;opacity:.24;
-  background:url("assets/flow-diagram.jpg") center/220% no-repeat}
+  background:url("assets/flow-diagram.jpg") center/220% no-repeat;
+  transition:opacity .7s var(--ease),transform 1.2s var(--ease)}
+.pcard:hover .media::before{opacity:.4;transform:scale(1.07)}
+/* Warmes Licht, das dem Zeiger ueber die Flaeche folgt. */
+.pcard .spot{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;
+  transition:opacity .5s var(--ease);
+  background:radial-gradient(240px 240px at var(--mx) var(--my),
+    rgba(240,120,90,.32) 0%, rgba(240,120,90,.11) 42%, transparent 72%)}
+.pcard:hover .spot{opacity:1}
+/* Beim Zeigen laeuft der Prozess: die Verbindungslinien wandern. */
+.pcard:hover .motif .flow,.pcard:hover .motif .flow *{
+  stroke-dasharray:7 9;animation:flowRun 1.5s linear infinite}
+@keyframes flowRun{to{stroke-dashoffset:-32}}
 .pcard:nth-child(2) .media::before{background-position:18% 30%}
 .pcard:nth-child(3) .media::before{background-position:78% 68%}
 .pcard:nth-child(4) .media::before{background-position:44% 12%}
-.pcard .media svg.motif{position:absolute;inset:0;width:100%;height:100%;color:var(--ember)}
+.pcard .media svg.motif{position:absolute;inset:0;width:100%;height:100%;color:var(--ember);
+  transition:color .5s var(--ease)}
+.pcard:hover .media svg.motif{color:#FF9573}
 .pcard .media::after{content:"";position:absolute;inset:0;
   background:radial-gradient(circle at 92% 8%, rgba(10,12,15,.92) 0%, rgba(10,12,15,.6) 22%, rgba(10,12,15,0) 46%),
              linear-gradient(180deg,rgba(16,18,22,.18) 0%,rgba(16,18,22,.42) 74%,rgba(16,18,22,.78) 100%)}
@@ -519,6 +550,8 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .step{opacity:1}
   .step .mono{color:var(--ember)}
   .untangle-stage{--up:1}
+  .pcard:hover .media::before{transform:none}
+  .pcard:hover .motif .flow,.pcard:hover .motif .flow *{stroke-dasharray:none}
   .band-settle .settle-sub,.band-settle .settle-cta{opacity:1;transform:none}
 }
 </style>
@@ -762,13 +795,34 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <p class="kicker part">Werkzeugkasten</p>
     <h2 class="part">Womit ich arbeite.</h2>
     <div class="skills part">
-      <span class="skill">Prozessaufnahme und Dokumentation (BPMN)</span>
-      <span class="skill">Engpass- und Schwachstellenanalyse</span>
-      <span class="skill">Kleine Automatisierungen mit Low-Code</span>
-      <span class="skill">Datenauswertung mit Excel und Dashboards</span>
-      <span class="skill">Security- und Compliance-Abläufe</span>
-      <span class="skill">Monitoring und SaaS-Betrieb (APM)</span>
-      <span class="skill">Übersetzen zwischen Büro und IT</span>
+      <span class="skill" tabindex="0">
+        <span class="s-label">Prozessaufnahme und Dokumentation (BPMN)</span>
+        <span class="s-more">Ich zeichne einen Ablauf so auf, dass ihn auch jemand versteht, der nie dabei war. Bei Swisscom habe ich so die Abläufe rund um eine Security-Software als BPMN modelliert.</span>
+      </span>
+      <span class="skill" tabindex="0">
+        <span class="s-label">Engpass- und Schwachstellenanalyse</span>
+        <span class="s-more">Wo staut es sich, wo wird doppelt gearbeitet, wo wartet jemand auf jemanden? Im Sportgeschäft von blue war es die Handarbeit zwischen mehreren Excel-Listen.</span>
+      </span>
+      <span class="skill" tabindex="0">
+        <span class="s-label">Kleine Automatisierungen mit Low-Code</span>
+        <span class="s-more">Wiederkehrende Handgriffe übernimmt eine Regel statt eine Person. Kein Grossprojekt, sondern genau der eine Schritt, der jede Woche Zeit frisst.</span>
+      </span>
+      <span class="skill" tabindex="0">
+        <span class="s-label">Datenauswertung mit Excel und Dashboards</span>
+        <span class="s-more">Aus verstreuten Listen wird eine Übersicht, die man einmal öffnet statt fünfmal zusammensucht. Genau das war die Arbeit bei blue Sport.</span>
+      </span>
+      <span class="skill" tabindex="0">
+        <span class="s-label">Security- und Compliance-Abläufe</span>
+        <span class="s-more">Abläufe, die einer Prüfung standhalten müssen: klare Zuständigkeiten, nachvollziehbare Freigaben, sauber dokumentiert. Aus meiner Zeit im Banking-Security-Umfeld.</span>
+      </span>
+      <span class="skill" tabindex="0">
+        <span class="s-label">Monitoring und SaaS-Betrieb (APM)</span>
+        <span class="s-more">Wie ein Betrieb merkt, dass etwas klemmt, bevor der Kunde anruft. Aus dem APM-as-a-Service-Betrieb bei Swisscom.</span>
+      </span>
+      <span class="skill" tabindex="0">
+        <span class="s-label">Übersetzen zwischen Büro und IT</span>
+        <span class="s-more">Die Fachabteilung sagt, was sie braucht. Die IT sagt, was geht. Meine Aufgabe ist, dass beide am Ende dasselbe meinen.</span>
+      </span>
     </div>
   </section>
 
@@ -794,7 +848,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
                 <rect x="72" y="118" width="40" height="30" rx="3"/><path d="M72 127h40M86 127v21"/>
               </g>
               <!-- Zusammenführung -->
-              <g opacity=".75">
+              <g class="flow" opacity=".75">
                 <path d="M60 43 C104 43 108 78 140 84"/><path d="M68 87 C104 87 112 86 140 86"/>
                 <path d="M56 131 C104 131 108 94 140 88"/><path d="M106 31 C126 31 124 76 140 83"/>
                 <path d="M112 133 C128 133 128 94 140 89"/>
@@ -809,6 +863,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
               <circle cx="150" cy="86" r="4.5" fill="currentColor"/>
               <path d="M154 86h18" stroke-width="1.8"/>
             </g></svg>
+          <span class="spot" aria-hidden="true"></span>
           <span class="num">01.</span>
           <span class="origin">Aus der Lehre</span>
         </div>
@@ -835,7 +890,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
               </g>
               <!-- unten: derselbe Weg, verschlankt -->
               <g>
-                <path d="M22 122h176" stroke-width="1.9"/>
+                <path class="flow" d="M22 122h176" stroke-width="1.9"/>
                 <circle cx="22" cy="122" r="5" fill="currentColor"/>
                 <circle cx="80" cy="122" r="5" fill="currentColor"/>
                 <circle cx="138" cy="122" r="5" fill="currentColor"/>
@@ -851,6 +906,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
                 <path d="M17 90h16M17 97h16M17 104h10"/>
               </g>
             </g></svg>
+          <span class="spot" aria-hidden="true"></span>
           <span class="num">02.</span>
           <span class="origin">Aus der Lehre</span>
         </div>
@@ -869,24 +925,25 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
             <g fill="none" stroke="currentColor" stroke-width="1.4">
               <!-- Startereignis -->
               <circle cx="26" cy="90" r="11"/>
-              <path d="M37 90h20"/>
+              <path class="flow" d="M37 90h20"/>
               <!-- Aufgabe -->
               <rect x="57" y="74" width="52" height="32" rx="5"/>
               <path d="M63 84h20M63 92h28M63 100h16" opacity=".5"/>
-              <path d="M109 90h18"/>
+              <path class="flow" d="M109 90h18"/>
               <!-- Entscheidung -->
               <path d="M145 72l18 18-18 18-18-18z"/>
-              <path d="M145 54v18M163 90h20M145 108v16"/>
+              <path class="flow" d="M145 54v18M163 90h20M145 108v16"/>
               <!-- Ja-Zweig -->
               <rect x="183" y="46" width="52" height="30" rx="5"/>
-              <path d="M145 61h38"/><path d="M235 61h22v29h-14"/>
+              <path class="flow" d="M145 61h38"/><path class="flow" d="M235 61h22v29h-14"/>
               <!-- Nein-Zweig -->
               <rect x="183" y="106" width="52" height="30" rx="5"/>
-              <path d="M145 121h38"/><path d="M235 121h22V90h-14"/>
+              <path class="flow" d="M145 121h38"/><path class="flow" d="M235 121h22V90h-14"/>
               <!-- Endereignis -->
               <circle cx="284" cy="90" r="12" stroke-width="2.4"/>
-              <path d="M257 90h15"/>
+              <path class="flow" d="M257 90h15"/>
             </g></svg>
+          <span class="spot" aria-hidden="true"></span>
           <span class="num">03.</span>
           <span class="origin">Aus der Lehre</span>
         </div>
@@ -909,7 +966,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
                 <path d="M24 106c0-14 44-14 44 0"/>
                 <rect x="16" y="40" width="60" height="82" rx="8" opacity=".4"/>
               </g>
-              <path d="M84 82h22" opacity=".7"/>
+              <path class="flow" d="M84 82h22" opacity=".7"/>
               <!-- User Story Karte -->
               <g>
                 <rect x="108" y="44" width="86" height="74" rx="6"/>
@@ -918,7 +975,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
                 <circle cx="116" cy="52" r="2.6" fill="currentColor" stroke="none"/>
                 <circle cx="124" cy="52" r="2.6" fill="currentColor" stroke="none"/>
               </g>
-              <path d="M194 82h20" opacity=".7"/>
+              <path class="flow" d="M194 82h20" opacity=".7"/>
               <!-- Akzeptanzkriterien, abgehakt -->
               <g>
                 <path d="M218 54l7 7 12-13" stroke-width="2"/><path d="M244 56h58" opacity=".55"/>
@@ -926,6 +983,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
                 <path d="M218 110l7 7 12-13" stroke-width="2"/><path d="M244 112h54" opacity=".55"/>
               </g>
             </g></svg>
+          <span class="spot" aria-hidden="true"></span>
           <span class="num">04.</span>
           <span class="origin">Schulprojekt</span>
         </div>
@@ -1596,6 +1654,36 @@ const revObserver=new IntersectionObserver(entries=>{
   });
 },{threshold:0.15});
 document.querySelectorAll('.rev').forEach(el=>revObserver.observe(el));
+
+/* ============ Projektkarten: Licht folgt dem Zeiger ============
+   Nur waehrend man auf einer Karte ist, und hoechstens einmal pro Bild.
+   Geschrieben werden zwei Zahlen auf ein einziges Element. */
+(function(){
+  const cards=[...document.querySelectorAll('.pcard')];
+  if(!cards.length||reduceQuery.matches)return;
+  let pending=null,queued=false;
+  function flush(){
+    queued=false;
+    if(!pending)return;
+    const {media,x,y}=pending;
+    media.style.setProperty('--mx',x.toFixed(1)+'%');
+    media.style.setProperty('--my',y.toFixed(1)+'%');
+  }
+  cards.forEach(card=>{
+    const media=card.querySelector('.media');
+    if(!media)return;
+    card.addEventListener('pointermove',e=>{
+      if(e.pointerType==='touch')return;
+      const r=media.getBoundingClientRect();
+      pending={media,x:(e.clientX-r.left)/r.width*100,y:(e.clientY-r.top)/r.height*100};
+      if(!queued){queued=true;requestAnimationFrame(flush)}
+    },{passive:true});
+    card.addEventListener('pointerleave',()=>{
+      media.style.setProperty('--mx','50%');
+      media.style.setProperty('--my','50%');
+    });
+  });
+})();
 
 /* ============ Interaktion: Knoten entwirren ============ */
 const untangle=document.getElementById('untangle');
