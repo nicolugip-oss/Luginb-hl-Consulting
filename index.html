@@ -421,6 +421,26 @@ textarea{min-height:120px;resize:vertical}
 .attach-note svg{color:var(--accent);margin-right:6px}
 .form-ok{display:none;margin-top:8px;color:var(--accent);font-size:.95rem}
 form.sent .form-ok{display:block}
+.paths{border:none;padding:0;margin:0 0 6px;display:grid;gap:10px}
+.paths legend{padding:0;margin-bottom:10px;font-size:.9rem;color:var(--text-secondary)}
+.path{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:14px;cursor:pointer;
+  border:1px solid var(--line-strong);background:rgba(11,17,28,.4);
+  transition:border-color .3s var(--ease),background .3s var(--ease)}
+.path:hover{border-color:rgba(79,212,234,.4)}
+.path input{position:absolute;opacity:0;width:0;height:0}
+.path .mark{flex:0 0 auto;width:18px;height:18px;margin-top:3px;border-radius:50%;
+  border:1.5px solid var(--line-strong);position:relative;transition:border-color .3s var(--ease)}
+.path .mark::after{content:"";position:absolute;inset:3.5px;border-radius:50%;background:var(--accent);
+  transform:scale(0);transition:transform .3s var(--ease)}
+.path .txt{display:flex;flex-direction:column;gap:3px}
+.path strong{font-weight:600;font-size:.98rem;color:var(--text-primary)}
+.path em{font-style:normal;font-size:.86rem;color:var(--text-secondary)}
+.path:has(input:checked),.path.on{border-color:var(--accent);background:rgba(79,212,234,.07)}
+.path:has(input:checked) .mark,.path.on .mark{border-color:var(--accent)}
+.path:has(input:checked) .mark::after,.path.on .mark::after{transform:scale(1)}
+.path:focus-within{outline:2px solid var(--accent);outline-offset:3px}
+@media (min-width:620px){.paths{grid-template-columns:1fr 1fr}.paths legend{grid-column:1 / -1}}
+
 .contact-ways{display:grid;gap:12px;margin-top:24px;max-width:460px}
 .way{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:14px;
   border:1px solid var(--line);background:rgba(11,17,28,.45);color:var(--text-primary);
@@ -515,7 +535,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <div class="inner">
         <p class="step-tag">Das Problem</p>
         <p class="h split-chars">Excel hier, Mails dort, Wissen nur in Köpfen.</p>
-        <p class="lead">Jeder kennt seinen Teil. Das Ganze kennt niemand.</p>
+        <p class="lead">Sie müssen nicht wissen, wo es klemmt. Genau dafür schaue ich hin.</p>
       </div>
     </div>
 
@@ -579,6 +599,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   <section class="section rev panel" id="knoten">
     <p class="kicker part">Woran es klemmt</p>
     <h2 class="part">Drei Sätze, die ich in fast jedem Betrieb höre.</h2>
+    <p class="lede part">Erkennen Sie sich wieder? Dann müssen Sie nicht weiter suchen. Das Suchen ist mein Teil der Arbeit.</p>
     <div class="grid-3">
       <article class="card part">
         <svg class="pict" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
@@ -617,7 +638,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <article class="card part">
         <span class="num">01</span>
         <h3>Prozessanalyse</h3>
-        <p>Ich schaue dort hin, wo der Ablauf wirklich passiert: bei den Leuten, die ihn täglich machen. Danach sehen Sie Ihren Prozess zum ersten Mal als Ganzes, als klares Diagramm.</p>
+        <p>Sie müssen mir nicht sagen, wo das Problem liegt. Ich schaue dort hin, wo der Ablauf wirklich passiert: bei den Leuten, die ihn täglich machen. Danach sehen Sie Ihren Prozess zum ersten Mal als Ganzes, als klares Diagramm.</p>
       </article>
       <article class="card part">
         <span class="num">02</span>
@@ -656,7 +677,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <div class="step" data-step="1">
         <span class="mono">Schritt 1 · Hinschauen</span>
         <h3>Ich schaue zu, bevor ich rede.</h3>
-        <p>Ich bin ein paar Tage bei Ihnen dabei, stelle Fragen und zeichne auf, wie es heute wirklich läuft.</p>
+        <p>Ich bin ein paar Tage bei Ihnen dabei, stelle Fragen und zeichne auf, wie es heute wirklich läuft. Sie müssen nichts vorbereiten und nichts analysiert haben.</p>
       </div>
       <div class="step" data-step="2">
         <span class="mono">Schritt 2 · Entwirren</span>
@@ -825,6 +846,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <h2 class="part">Was Sie vermutlich denken.</h2>
     <div class="faq part">
       <details>
+        <summary>Wir wissen gar nicht genau, wo unser Problem liegt.</summary>
+        <p class="a">Das ist der Normalfall, und genau dafür bin ich da. Sie müssen keine Analyse mitbringen und keine Liste von Schwachstellen. Ich schaue mir an, wie bei Ihnen wirklich gearbeitet wird, und sage Ihnen danach, wo Zeit verloren geht und was sich zuerst lohnt. Wenn Sie eine Stelle schon im Verdacht haben, sagen Sie es mir, dann schauen wir zusätzlich gezielt dorthin.</p>
+      </details>
+      <details>
         <summary>Warum sollte ich einem 17-Jährigen vertrauen?</summary>
         <p class="a">Müssen Sie nicht, und ich habe auch noch keine Kundenreferenzen, die für mich sprechen. Was ich habe: eine Ausbildung mitten in den Prozessen eines der grössten Schweizer Tech-Unternehmen, und einen kostenlosen Prozess-Check. Sie sehen zuerst, was ich sehe, und entscheiden danach.</p>
       </details>
@@ -865,16 +890,36 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <div class="inner">
         <p class="kicker">Der erste Faden</p>
         <h2>Kostenloser Prozess‑Check</h2>
-        <p class="lede" style="color:var(--text-primary)">Beschreiben Sie in zwei, drei Sätzen, wo es klemmt. Ich melde mich innerhalb von zwei Tagen mit einer ehrlichen Einschätzung.</p>
+        <p class="lede" style="color:var(--text-primary)">Sie müssen nicht wissen, wo das Problem liegt. Ich schaue mir Ihre Abläufe an und sage Ihnen, wo Zeit verloren geht. Wenn Sie die Stelle schon kennen, schauen wir gezielt dorthin. Beides kostet nichts, und ich melde mich innerhalb von zwei Tagen.</p>
         <form id="contact-form" novalidate>
+          <fieldset class="paths">
+            <legend>Wie möchten Sie starten?</legend>
+            <label class="path">
+              <input type="radio" name="weg" value="schauen" checked>
+              <span class="mark" aria-hidden="true"></span>
+              <span class="txt">
+                <strong>Schauen Sie mal drauf</strong>
+                <em>Ich sehe mir Ihre Abläufe an und sage Ihnen, wo Zeit verloren geht.</em>
+              </span>
+            </label>
+            <label class="path">
+              <input type="radio" name="weg" value="stelle">
+              <span class="mark" aria-hidden="true"></span>
+              <span class="txt">
+                <strong>Ich weiss, wo es klemmt</strong>
+                <em>Sie zeigen mir die Stelle, ich schaue gezielt dorthin.</em>
+              </span>
+            </label>
+          </fieldset>
           <label>Ihr Name
             <input type="text" name="name" autocomplete="name" required>
           </label>
           <label>Firma (optional)
             <input type="text" name="firma" autocomplete="organization">
           </label>
-          <label>Wo klemmt es?
-            <textarea name="anliegen" required></textarea>
+          <label><span id="anliegen-label">Was macht Ihr Betrieb, und wie viele Leute arbeiten dort?</span>
+            <textarea name="anliegen" id="anliegen" required
+              placeholder="Ein, zwei Sätze genügen. Den Rest sehe ich mir selbst an."></textarea>
           </label>
           <p class="attach-note">
             <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" style="vertical-align:-2px"><path d="M21 12.5l-8.5 8.5a6 6 0 0 1-8.5-8.5L12.5 4a4 4 0 0 1 5.7 5.7L9.7 18.2a2 2 0 0 1-2.9-2.9L14 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -1524,6 +1569,35 @@ if(stepsEl)stepsObserver.observe(stepsEl);
 
 /* ============ Formular (mailto, ehrlich) ============ */
 const form=document.getElementById('contact-form');
+/* Zwei Wege ins Gespraech: Ich schaue hin, oder Sie zeigen mir die Stelle.
+   Beschriftung und Platzhalter folgen der Wahl. */
+const WEGE={
+  schauen:{label:'Was macht Ihr Betrieb, und wie viele Leute arbeiten dort?',
+           ph:'Ein, zwei Sätze genügen. Den Rest sehe ich mir selbst an.',
+           mail:'Weg: Ich schaue mir die Ablaeufe an\n\nZum Betrieb:'},
+  stelle:{label:'Wo klemmt es?',
+          ph:'Beschreiben Sie die Stelle, die Sie am meisten stört.',
+          mail:'Weg: Die Stelle ist bekannt\n\nWo es klemmt:'}
+};
+function currentWeg(){
+  const el=form?form.querySelector('input[name="weg"]:checked'):null;
+  return (el&&WEGE[el.value])?el.value:'schauen';
+}
+if(form){
+  const labelEl=document.getElementById('anliegen-label');
+  const areaEl=document.getElementById('anliegen');
+  const radios=[...form.querySelectorAll('input[name="weg"]')];
+  function syncWeg(){
+    const w=WEGE[currentWeg()];
+    if(labelEl)labelEl.textContent=w.label;
+    if(areaEl)areaEl.setAttribute('placeholder',w.ph);
+    /* Klasse zusaetzlich zu :has(), damit die Auswahl auch in
+       aelteren Browsern sichtbar markiert ist. */
+    radios.forEach(r=>r.closest('.path').classList.toggle('on',r.checked));
+  }
+  radios.forEach(r=>r.addEventListener('change',syncWeg));
+  syncWeg();
+}
 if(form){
   form.addEventListener('submit',e=>{
     e.preventDefault();
@@ -1531,7 +1605,8 @@ if(form){
     const name=(fd.get('name')||'').toString().trim();
     const firma=(fd.get('firma')||'').toString().trim();
     const anliegen=(fd.get('anliegen')||'').toString().trim();
-    const body='Name: '+name+'\n'+(firma?('Firma: '+firma+'\n'):'')+'\nWo es klemmt:\n'+anliegen+'\n\n(Dateien koennen Sie direkt an diese Mail anhaengen.)\n';
+    const weg=WEGE[currentWeg()];
+    const body='Name: '+name+'\n'+(firma?('Firma: '+firma+'\n'):'')+'\n'+weg.mail+'\n'+anliegen+'\n\n(Dateien koennen Sie direkt an diese Mail anhaengen.)\n';
     const url='mailto:nico.luginbuehl@bluewin.ch?subject='+encodeURIComponent('Anfrage Prozess-Check')+'&body='+encodeURIComponent(body);
     location.href=url;
     form.classList.add('sent');
