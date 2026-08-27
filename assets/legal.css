@@ -59,7 +59,7 @@ li{margin-bottom:7px}
 .card p:last-child{margin-bottom:0}
 .note{border-left:2px solid var(--ember);padding:4px 0 4px 18px;margin:26px 0;color:var(--muted)}
 .back{display:inline-flex;align-items:center;gap:9px;margin-top:52px;border-bottom:none;
-  border:1px solid var(--rule-2);border-radius:var(--r-sm);padding:12px 22px;
+  border:1px solid var(--rule-2);border-radius:999px;padding:12px 24px;
   color:var(--light);font-size:.94rem;transition:border-color .3s var(--ease),background .3s var(--ease),color .3s var(--ease)}
 .back:hover{border-color:var(--light);background:var(--light);color:var(--ground)}
 footer{background:var(--ground-3);padding:32px clamp(20px,5vw,48px) 40px;
