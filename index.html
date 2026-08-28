@@ -402,22 +402,35 @@ main{position:relative;counter-reset:sec}
 
 /* Kompetenzen */
 .skills{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px;margin-top:44px;max-width:880px}
-/* Beim Zeigen klappt der Begriff auf und erklaert sich in einem Satz.
-   Tastatur und Tippen loesen dasselbe aus wie die Maus. */
+/* Beim Zeigen erklaert sich der Begriff in einem Satz. Die Erklaerung
+   liegt ueber der Seite statt in ihr: der Chip selbst aendert seine Groesse
+   nie. Vorher wuchs er, dadurch floss die ganze Zeile neu um und die Seite
+   rechnete das Layout bei jedem Bild neu, 27 Mal pro Aufklappen. Genau das
+   war das Stottern. Jetzt bewegen sich nur Deckkraft und Verschiebung,
+   beides ohne Layout. */
 .skill{position:relative;max-width:100%;
   border:1px solid var(--rule-2);border-radius:var(--r-sm);padding:9px 16px;font-size:.92rem;
   color:var(--light);background:var(--ground-2);cursor:default;
-  transition:border-color .35s var(--ease),background .35s var(--ease)}
+  transition:border-color .3s var(--ease),background .3s var(--ease)}
 .skill .s-label{display:block;font-size:.92rem;white-space:nowrap}
-/* Zugeklappt ist die Erklaerung null breit: sonst wuerde ihr Satz die
-   Breite des Begriffs bestimmen und jeder Chip die ganze Zeile fuellen. */
-.skill .s-more{display:block;width:0;max-height:0;opacity:0;overflow:hidden;
-  color:var(--muted);font-size:.86rem;line-height:1.52;
-  transition:width .45s var(--ease),max-height .45s var(--ease),opacity .3s var(--ease),margin-top .45s var(--ease)}
-.skill:hover,.skill:focus{outline:none;border-color:var(--ember);background:var(--ground-3)}
-.skill:hover .s-more,.skill:focus .s-more{width:min(34ch,68vw);max-height:10em;opacity:1;margin-top:9px}
+.skill .s-more{position:absolute;z-index:1;left:-1px;top:calc(100% + 9px);
+  width:min(330px,74vw);padding:14px 16px;
+  border:1px solid rgba(240,120,90,.5);border-radius:var(--r-sm);
+  background:var(--ground-3);box-shadow:0 14px 34px rgba(0,0,0,.5);
+  color:var(--muted);font-size:.86rem;line-height:1.52;text-align:left;
+  opacity:0;transform:translateY(-7px);transform-origin:top left;
+  pointer-events:none;visibility:hidden;
+  transition:opacity .24s var(--ease),transform .28s var(--ease),visibility 0s .28s}
+/* Am rechten Rand klappt die Erklaerung nach links auf, sonst haenge sie
+   ueber den Seitenrand hinaus. Die Klasse setzt das Skript einmal beim
+   Zeigen, nicht bei jedem Bild. */
+.skill.s-flip .s-more{left:auto;right:-1px;transform-origin:top right}
+.skill:hover,.skill:focus{outline:none;border-color:var(--ember);background:var(--ground-3);z-index:6}
+.skill:hover .s-more,.skill:focus .s-more{opacity:1;transform:none;visibility:visible;transition-delay:0s}
 .skill:focus-visible{box-shadow:0 0 0 2px var(--ember)}
-@media (prefers-reduced-motion:reduce){.skill,.skill .s-more{transition:none}}
+@media (prefers-reduced-motion:reduce){
+  .skill,.skill .s-more{transition:none}
+  .skill:hover .s-more,.skill:focus .s-more{transition:none}}
 
 /* Projekte */
 .pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;margin-top:52px}
@@ -428,10 +441,6 @@ main{position:relative;counter-reset:sec}
 .pcard:hover{border-color:var(--light)}
 .pcard .media{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--night);
   --mx:50%;--my:50%}
-.pcard .media::before{content:"";position:absolute;inset:0;opacity:.24;
-  background:url("assets/flow-diagram.jpg") center/220% no-repeat;
-  transition:opacity .7s var(--ease),transform 1.2s var(--ease)}
-.pcard:hover .media::before{opacity:.4;transform:scale(1.07)}
 /* Warmes Licht, das dem Zeiger ueber die Flaeche folgt. */
 .pcard .spot{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;
   transition:opacity .5s var(--ease);
@@ -442,9 +451,6 @@ main{position:relative;counter-reset:sec}
 .pcard:hover .motif .flow,.pcard:hover .motif .flow *{
   stroke-dasharray:7 9;animation:flowRun 1.5s linear infinite}
 @keyframes flowRun{to{stroke-dashoffset:-32}}
-.pcard:nth-child(2) .media::before{background-position:18% 30%}
-.pcard:nth-child(3) .media::before{background-position:78% 68%}
-.pcard:nth-child(4) .media::before{background-position:44% 12%}
 .pcard .media svg.motif{position:absolute;inset:0;width:100%;height:100%;color:var(--ember);
   transition:color .5s var(--ease)}
 .pcard:hover .media svg.motif{color:#FF9573}
@@ -572,7 +578,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   .step{opacity:1}
   .step .mono{color:var(--ember)}
   .untangle-stage{--up:1}
-  .pcard:hover .media::before{transform:none}
   .pcard:hover .motif .flow,.pcard:hover .motif .flow *{stroke-dasharray:none}
 }
 </style>
@@ -1697,6 +1702,26 @@ const revObserver=new IntersectionObserver(entries=>{
   });
 },{threshold:0.15});
 document.querySelectorAll('.rev').forEach(el=>revObserver.observe(el));
+
+/* ============ Werkzeugkasten: Erklaerung nach links kippen ============
+   Nur einmal beim Zeigen gemessen, nicht bei jedem Bild. Ohne das haengt
+   die Erklaerung bei den rechten Begriffen ueber den Seitenrand. */
+(function(){
+  const chips=[...document.querySelectorAll('.skill')];
+  if(!chips.length)return;
+  function place(chip){
+    const more=chip.querySelector('.s-more');
+    if(!more)return;
+    chip.classList.remove('s-flip');
+    const left=chip.getBoundingClientRect().left;
+    const width=more.offsetWidth;
+    if(left+width>innerWidth-16)chip.classList.add('s-flip');
+  }
+  chips.forEach(chip=>{
+    chip.addEventListener('pointerenter',()=>place(chip));
+    chip.addEventListener('focus',()=>place(chip));
+  });
+})();
 
 /* ============ Projektkarten: Licht folgt dem Zeiger ============
    Nur waehrend man auf einer Karte ist, und hoechstens einmal pro Bild.
