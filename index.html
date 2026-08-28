@@ -384,7 +384,38 @@ main{position:relative;counter-reset:sec}
   transition:color .5s var(--ease)}
 .step.lit .mono{color:var(--ember)}
 
-/* Ueber mich */
+/* Ueber mich: ein ruhendes Feld aus Faeden, und ein Licht, das mitwandert.
+   Im Licht liegen dieselben Faeden noch einmal, heller und enger, dazu ein
+   warmer Schein: wo man hinschaut, treten die Faeden hervor.
+   Bewusst nur EIN bewegtes Element von 600 Pixeln, und bewegt wird nur
+   transform. Eine erste Fassung mit drei bildschirmgrossen Ebenen halbierte
+   die Bildrate, gemessen 33.3 statt 16.7 Millisekunden. */
+.weave{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.weave-bed{position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(241,238,230,.045) 0 1px,transparent 1px 38px)}
+/* Oben und unten laufen die Faeden aus, damit das Feld keine Kante hat. */
+.weave::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--ground) 0%,transparent 20%,transparent 80%,var(--ground) 100%)}
+/* Eine Linse, die den Faden bricht. Innen liegt derselbe Grundton, der die
+   ruhenden Faeden verdeckt, und darauf dieselben Faeden noch einmal, um eine
+   halbe Teilung versetzt und waermer. Am Rand der Linse springt deshalb
+   jeder Faden sichtbar zur Seite.
+   Der Trick dabei: die Helligkeit aendert sich fast nicht, also bleibt der
+   Text darunter lesbar. Eine Fassung mit hellem Licht sah gut aus, liess den
+   Nebentext aber auf 2.5:1 fallen. */
+.weave-lens{position:absolute;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;
+  --tx:0px;
+  opacity:0;will-change:transform,opacity;backface-visibility:hidden;
+  background:var(--ground);
+  -webkit-mask-image:radial-gradient(circle closest-side,#000 0%,#000 74%,transparent 100%);
+  mask-image:radial-gradient(circle closest-side,#000 0%,#000 74%,transparent 100%);
+  transition:opacity .5s var(--ease)}
+.weave-lens::before{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(240,150,120,.14) 0 1px,transparent 1px 38px);
+  background-position:var(--tx) 0}
+.weave.live .weave-lens{opacity:1}
+@media (prefers-reduced-motion:reduce){.weave-lens{display:none}}
+
 .about-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:60px;margin-top:52px}
 @media (max-width:900px){.about-grid{grid-template-columns:1fr;gap:40px}}
 .about-text p{margin-bottom:18px;color:var(--text-secondary)}
@@ -800,6 +831,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 
   <!-- Über mich -->
   <section class="section rev" id="ueber-mich">
+    <div class="weave" aria-hidden="true">
+      <span class="weave-bed"></span>
+      <span class="weave-lens"></span>
+    </div>
     <p class="kicker part">Wer dahinter steckt</p>
     <h2 class="part">Nico Luginbühl, 17. Und ja, das ist Absicht.</h2>
     <div class="about-grid">
@@ -1723,6 +1758,32 @@ const revObserver=new IntersectionObserver(entries=>{
   });
 },{threshold:0.15});
 document.querySelectorAll('.rev').forEach(el=>revObserver.observe(el));
+
+/* ============ Fadenfeld hinter "Wer dahinter steckt" ============
+   Das Licht folgt dem Zeiger. Geschrieben wird hoechstens einmal pro Bild,
+   und nur transform auf einem einzigen Element. */
+(function(){
+  const sec=document.getElementById('ueber-mich');
+  const weave=sec&&sec.querySelector('.weave');
+  if(!weave||reduceQuery.matches)return;
+  const lens=weave.querySelector('.weave-lens');
+  let pending=null,queued=false;
+  function paint(){
+    queued=false;
+    if(!pending)return;
+    lens.style.transform='translate3d('+pending.x.toFixed(1)+'px,'+pending.y.toFixed(1)+'px,0)';
+    /* Die Faeden bleiben an der Seite verankert, nicht an der Linse. */
+    lens.style.setProperty('--tx',(260-pending.x+19).toFixed(1)+'px');
+  }
+  sec.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch')return;
+    if(!weave.classList.contains('live'))weave.classList.add('live');
+    const r=weave.getBoundingClientRect();
+    pending={x:e.clientX-r.left,y:e.clientY-r.top};
+    if(!queued){queued=true;requestAnimationFrame(paint)}
+  },{passive:true});
+  sec.addEventListener('pointerleave',()=>{weave.classList.remove('live');pending=null});
+})();
 
 /* ============ Werkzeugkasten: Erklaerung nach links kippen ============
    Nur einmal beim Zeigen gemessen, nicht bei jedem Bild. Ohne das haengt
