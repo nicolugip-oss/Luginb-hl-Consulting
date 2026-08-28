@@ -399,23 +399,24 @@ main{position:relative;counter-reset:sec}
 /* Oben und unten laeuft das Raster aus, damit das Feld keine Kante hat. */
 .weave::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,var(--ground) 0%,transparent 18%,transparent 82%,var(--ground) 100%)}
-/* Der Grund wird leicht tiefer, damit die hellen Punkte Luft bekommen und
-   der Text darunter nicht an Kontrast verliert. */
-.weave-lens{position:absolute;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;
+/* Ein kleiner Ring, der den Zeiger umkreist. Darin liegen dieselben Punkte
+   wie im Raster, nur groesser und waermer, und der Grund ist leicht tiefer,
+   damit sie Luft bekommen und der Text darunter lesbar bleibt. */
+.weave-lens{position:absolute;left:0;top:0;width:160px;height:160px;margin:-80px 0 0 -80px;
   --tx:0px;--ty:0px;
   opacity:0;will-change:transform,opacity;backface-visibility:hidden;
-  background:radial-gradient(circle closest-side,rgba(10,9,11,.55),rgba(10,9,11,.22) 54%,transparent 78%);
-  -webkit-mask-image:radial-gradient(circle closest-side,#000 0%,#000 32%,transparent 74%);
-  mask-image:radial-gradient(circle closest-side,#000 0%,#000 32%,transparent 74%);
-  transition:opacity .5s var(--ease)}
-.weave-lens::before{content:"";position:absolute;inset:0;
-  background-image:radial-gradient(circle at center,rgba(240,150,120,.17) 0 2.5px,transparent 3.3px);
+  border-radius:50%;overflow:hidden;
+  border:1.5px solid rgba(240,120,90,.55);
+  background:radial-gradient(circle closest-side,rgba(10,9,11,.58),rgba(10,9,11,.38) 72%,rgba(10,9,11,.26) 100%);
+  box-shadow:0 0 0 5px rgba(240,120,90,.055);
+  transition:opacity .4s var(--ease)}
+.weave-lens::before{content:"";position:absolute;inset:-2px;
+  background-image:radial-gradient(circle at center,rgba(240,150,120,.15) 0 2.5px,transparent 3.3px);
   background-size:28px 28px;
   background-position:var(--tx) var(--ty);
-  /* Enger als der abgedunkelte Pool: sonst leuchten am Rand Punkte auf,
-     wo der Grund noch gar nicht tiefer ist, und genau dort litt der Text. */
-  -webkit-mask-image:radial-gradient(circle closest-side,#000 0%,#000 20%,transparent 56%);
-  mask-image:radial-gradient(circle closest-side,#000 0%,#000 20%,transparent 56%)}
+  /* Zum Rand hin gehen die Punkte zurueck, damit der Ring die Kante macht. */
+  -webkit-mask-image:radial-gradient(circle closest-side,#000 0%,#000 62%,transparent 100%);
+  mask-image:radial-gradient(circle closest-side,#000 0%,#000 62%,transparent 100%)}
 .weave.live .weave-lens{opacity:1}
 @media (prefers-reduced-motion:reduce){.weave-lens{display:none}}
 
@@ -1776,8 +1777,8 @@ document.querySelectorAll('.rev').forEach(el=>revObserver.observe(el));
     if(!pending)return;
     lens.style.transform='translate3d('+pending.x.toFixed(1)+'px,'+pending.y.toFixed(1)+'px,0)';
     /* Die Faeden bleiben an der Seite verankert, nicht an der Linse. */
-    lens.style.setProperty('--tx',(260-pending.x).toFixed(1)+'px');
-    lens.style.setProperty('--ty',(260-pending.y).toFixed(1)+'px');
+    lens.style.setProperty('--tx',(80-pending.x).toFixed(1)+'px');
+    lens.style.setProperty('--ty',(80-pending.y).toFixed(1)+'px');
   }
   sec.addEventListener('pointermove',e=>{
     if(e.pointerType==='touch')return;
