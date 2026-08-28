@@ -393,9 +393,30 @@ main{position:relative;counter-reset:sec}
 .t-item{position:relative;padding:22px 0 22px 26px;border-bottom:1px solid var(--rule)}
 .t-item::before{content:"";position:absolute;left:0;top:27px;width:9px;height:9px;
   border-radius:50%;background:var(--ember)}
-/* Die aktuelle Station bekommt zusaetzlich einen Ring. */
+/* Die aktuelle Station bekommt zusaetzlich einen Ring. Beide schlagen wie
+   ein Herz: zwei kurze Schlaege, dann eine Pause. Bewegt wird nur die
+   Groesse und die Deckkraft, das kostet kein Layout. */
 .t-item:first-child::after{content:"";position:absolute;left:-4px;top:23px;width:17px;height:17px;
   border-radius:50%;border:1px solid rgba(240,120,90,.42)}
+.rev.in .t-item:first-child::before{animation:heartBeat 1.7s var(--ease) infinite}
+.rev.in .t-item:first-child::after{animation:heartRing 1.7s var(--ease) infinite}
+@keyframes heartBeat{
+  0%{transform:scale(1)}
+  7%{transform:scale(1.45)}
+  15%{transform:scale(1)}
+  23%{transform:scale(1.24)}
+  33%{transform:scale(1)}
+  100%{transform:scale(1)}}
+/* Der Ring geht mit jedem Schlag nach aussen und kehrt unsichtbar in die
+   Ruhelage zurueck, deshalb sieht man den Sprung nicht. Zwischen den
+   Schlaegen bleibt er schwach stehen und markiert die aktuelle Station. */
+@keyframes heartRing{
+  0%{transform:scale(1);opacity:.45}
+  7%{transform:scale(1.16);opacity:.85}
+  38%{transform:scale(1.8);opacity:0}
+  40%{transform:scale(1);opacity:0}
+  58%{transform:scale(1);opacity:.45}
+  100%{transform:scale(1);opacity:.45}}
 .t-item .when{font-family:var(--mono);font-size:.72rem;color:var(--text-secondary);letter-spacing:.08em}
 .t-item h3{font-size:1.02rem;margin:7px 0 4px}
 .t-item p{color:var(--text-secondary);font-size:.93rem;max-width:52ch}
