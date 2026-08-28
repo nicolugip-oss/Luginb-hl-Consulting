@@ -399,24 +399,23 @@ main{position:relative;counter-reset:sec}
 /* Oben und unten laeuft das Raster aus, damit das Feld keine Kante hat. */
 .weave::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,var(--ground) 0%,transparent 18%,transparent 82%,var(--ground) 100%)}
-/* Ein kleiner Ring, der den Zeiger umkreist. Darin liegen dieselben Punkte
-   wie im Raster, nur groesser und waermer, und der Grund ist leicht tiefer,
-   damit sie Luft bekommen und der Text darunter lesbar bleibt. */
-.weave-lens{position:absolute;left:0;top:0;width:160px;height:160px;margin:-80px 0 0 -80px;
+/* Ein Ring, der den Zeiger umkreist, mit dem Radius der Fliesstextgroesse
+   (17 Pixel), also 36 Pixel im Durchmesser. Darin liegt der Grund etwas
+   tiefer und die Punkte des Rasters leuchten warm auf: weil der Ring nur
+   wenig groesser ist als der Rasterabstand, leuchten immer nur ein bis
+   zwei Punkte gleichzeitig, waehrend man darueberfaehrt. */
+.weave-lens{position:absolute;left:0;top:0;width:36px;height:36px;margin:-18px 0 0 -18px;
   --tx:0px;--ty:0px;
   opacity:0;will-change:transform,opacity;backface-visibility:hidden;
   border-radius:50%;overflow:hidden;
-  border:1.5px solid rgba(240,120,90,.55);
-  background:radial-gradient(circle closest-side,rgba(10,9,11,.58),rgba(10,9,11,.38) 72%,rgba(10,9,11,.26) 100%);
-  box-shadow:0 0 0 5px rgba(240,120,90,.055);
-  transition:opacity .4s var(--ease)}
+  border:1.5px solid rgba(240,120,90,.62);
+  background:radial-gradient(circle closest-side,rgba(10,9,11,.48),rgba(10,9,11,.28) 100%);
+  box-shadow:0 0 0 4px rgba(240,120,90,.07),0 0 14px 2px rgba(240,120,90,.10);
+  transition:opacity .35s var(--ease)}
 .weave-lens::before{content:"";position:absolute;inset:-2px;
-  background-image:radial-gradient(circle at center,rgba(240,150,120,.15) 0 2.5px,transparent 3.3px);
+  background-image:radial-gradient(circle at center,rgba(240,150,120,.14) 0 2.6px,transparent 3.4px);
   background-size:28px 28px;
-  background-position:var(--tx) var(--ty);
-  /* Zum Rand hin gehen die Punkte zurueck, damit der Ring die Kante macht. */
-  -webkit-mask-image:radial-gradient(circle closest-side,#000 0%,#000 62%,transparent 100%);
-  mask-image:radial-gradient(circle closest-side,#000 0%,#000 62%,transparent 100%)}
+  background-position:var(--tx) var(--ty)}
 .weave.live .weave-lens{opacity:1}
 @media (prefers-reduced-motion:reduce){.weave-lens{display:none}}
 
@@ -1777,8 +1776,8 @@ document.querySelectorAll('.rev').forEach(el=>revObserver.observe(el));
     if(!pending)return;
     lens.style.transform='translate3d('+pending.x.toFixed(1)+'px,'+pending.y.toFixed(1)+'px,0)';
     /* Die Faeden bleiben an der Seite verankert, nicht an der Linse. */
-    lens.style.setProperty('--tx',(80-pending.x).toFixed(1)+'px');
-    lens.style.setProperty('--ty',(80-pending.y).toFixed(1)+'px');
+    lens.style.setProperty('--tx',(18-pending.x).toFixed(1)+'px');
+    lens.style.setProperty('--ty',(18-pending.y).toFixed(1)+'px');
   }
   sec.addEventListener('pointermove',e=>{
     if(e.pointerType==='touch')return;
