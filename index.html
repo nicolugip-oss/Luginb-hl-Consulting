@@ -324,6 +324,26 @@ main{position:relative;counter-reset:sec}
 .card .pict{display:block;margin-bottom:18px;color:var(--light)}
 .card:hover .pict{color:var(--ember)}
 .card .pict .pulse{color:var(--ember)}
+/* Die drei Zeichen bewegen sich, sobald der Abschnitt im Bild ist.
+   Es sind drei kleine Animationen auf je einem Element, ohne Layout. */
+.rider{offset-path:path("M6 22 C14 8 30 36 38 22");offset-rotate:0deg;offset-distance:0%}
+.rev.in .card:nth-child(1) .rider{animation:ride 3.8s ease-in-out infinite}
+@keyframes ride{
+  0%{offset-distance:0%;opacity:0}
+  9%{opacity:1}
+  86%{opacity:1}
+  100%{offset-distance:100%;opacity:0}}
+/* Ohne offset-path bleibt der Punkt einfach in der Mitte der Welle. */
+@supports not (offset-path: path("M0 0")){.rider{transform:translate(22px,22px)}}
+
+.rev.in .card:nth-child(2) .blink{animation:xBlink 2.6s steps(1,end) infinite}
+@keyframes xBlink{0%,40%{opacity:1}42%,47%{opacity:.12}49%,57%{opacity:1}59%,64%{opacity:.12}66%,100%{opacity:1}}
+
+/* Die Kurve ist eine Periode laenger gezeichnet, als das Fenster breit ist,
+   und wandert genau um eine Periode. Deshalb sieht man keinen Ansatz. */
+.wave{transform-box:view-box;transform-origin:0 0}
+.rev.in .card:nth-child(3) .wave{animation:waveRun 2.4s linear infinite}
+@keyframes waveRun{from{transform:translateX(0)}to{transform:translateX(-13px)}}
 
 /* Entrances unter dem Fold */
 .rev .part{opacity:0;transform:translateY(22px)}
@@ -660,7 +680,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <article class="card part">
         <svg class="pict" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
           <path d="M6 22 C14 8 30 36 38 22 M6 30 C14 16 30 44 38 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".9"/>
-          <circle class="pulse" cx="22" cy="22" r="3" fill="currentColor"/>
+          <circle class="pulse rider" cx="0" cy="0" r="3" fill="currentColor"/>
         </svg>
         <h3>«Niemand hat den Überblick.»</h3>
         <p>Jeder kennt seinen Teil. Das Ganze kennt niemand. Engpässe bleiben unsichtbar, bis es brennt.</p>
@@ -669,7 +689,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
         <svg class="pict" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
           <circle cx="22" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/>
           <path d="M10 36 C10 27 34 27 34 36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          <path class="pulse" d="M30 8 L38 16 M38 8 L30 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path class="pulse blink" d="M30 8 L38 16 M38 8 L30 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
         <h3>«Alles hängt an einer Person.»</h3>
         <p>Das Wissen steckt in einem Kopf statt in einem Ablauf. Fällt diese Person aus, steht der Prozess still.</p>
@@ -677,7 +697,11 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <article class="card part">
         <svg class="pict" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
           <rect x="7" y="10" width="30" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
-          <path class="pulse" d="M13 22 C17 16 21 28 25 22 C28 18 30 24 32 21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <clipPath id="screen-clip"><rect x="9.4" y="12.4" width="25.2" height="17.2" rx="1.6"/></clipPath>
+          <g clip-path="url(#screen-clip)">
+            <path class="pulse wave" d="M9 21 q3.25 -7 6.5 0 t6.5 0 t6.5 0 t6.5 0 t6.5 0 t6.5 0"
+                  fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
           <path d="M16 38 L28 38" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
         <h3>«Das Tool hat nichts gebracht.»</h3>
