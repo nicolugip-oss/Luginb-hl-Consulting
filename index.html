@@ -98,7 +98,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;
 nav>*{pointer-events:auto}
 nav.scrolled{padding-top:12px;padding-bottom:12px}
 .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:700;
-  font-size:1.02rem;letter-spacing:-.01em;color:var(--light);
+  font-size:1.02rem;letter-spacing:-.01em;color:var(--light);white-space:nowrap;
   text-shadow:0 2px 14px rgba(6,8,11,.7);
   transition:color .4s var(--ease),text-shadow .4s var(--ease)}
 .brand:hover{color:var(--light)}
@@ -137,7 +137,7 @@ nav.on-paper .nav-pill{border-color:rgba(241,238,230,.22);box-shadow:0 10px 30px
 .nav-cta{display:inline-flex;align-items:center;gap:9px}
 .nav-cta svg{display:block;transition:transform .35s var(--ease)}
 .nav-cta:hover svg{transform:translateX(3px)}
-@media (max-width:980px){.nav-pill{display:none}.nav-cta{margin-left:auto}}
+@media (max-width:1140px){.nav-pill{display:none}.nav-cta{margin-left:auto}}
 @media (max-width:520px){.brand span{display:none}}
 
 /* ============ Hero (Scrub) ============ */
@@ -491,6 +491,26 @@ main{position:relative;counter-reset:sec}
 @media (prefers-reduced-motion:reduce){
   .skill,.skill .s-more{transition:none}
   .skill:hover .s-more,.skill:focus .s-more{transition:none}}
+
+/* Abschluss eines Abschnitts: eine Handlung, daneben die leisere
+   Alternative, darunter das Kleingedruckte. Vorher stand hier .hero-cta,
+   eine Klasse aus dem Video, die ausserhalb des Videos ueberhaupt keine
+   Regeln hat: die zwei Knoepfe klebten deshalb aneinander und sassen zu
+   nah am Text darueber. */
+.cta-row{margin-top:54px;padding-top:34px;border-top:1px solid var(--rule);
+  display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.cta-main{display:flex;flex-wrap:wrap;align-items:center;gap:18px 30px}
+.cta-alt{display:inline-flex;align-items:center;gap:9px;color:var(--light);font-size:.95rem;
+  border-bottom:1px solid var(--rule-2);padding-bottom:4px;
+  transition:color .3s var(--ease),border-color .3s var(--ease)}
+.cta-alt:hover{color:var(--ember);border-bottom-color:var(--ember)}
+.cta-alt svg{display:block;transition:transform .35s var(--ease)}
+.cta-alt:hover svg{transform:translateX(3px)}
+.cta-hint{font-size:.86rem;color:var(--muted-2);max-width:56ch;margin:0}
+@media (max-width:560px){
+  .cta-main{width:100%;gap:16px}
+  .cta-main .btn{width:100%;text-align:center;justify-content:center}
+}
 
 /* Projekte */
 .pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;margin-top:52px}
@@ -1143,7 +1163,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   </section>
 
   <!-- Sponsoring -->
-  <section class="section rev panel" id="sponsoring">
+  <section class="section rev" id="sponsoring">
     <p class="kicker part">Für Firmen, die mitbauen wollen</p>
     <h2 class="part">Werden Sie Teil der Geschichte.</h2>
     <div class="grid-3 part">
@@ -1163,9 +1183,14 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
         <p>Wählen Sie einen Betrag, der für Sie stimmt, und zahlen Sie direkt und sicher über Stripe. Für die Logo-Platzierung melde ich mich danach persönlich bei Ihnen.</p>
       </article>
     </div>
-    <div class="hero-cta" style="margin-top:8px">
-      <a class="btn" href="https://donate.stripe.com/5kQ5kwghd7mm6xAaCFb7y00" target="_blank" rel="noopener">Sponsor werden</a>
-      <a class="quiet" href="#kontakt">Lieber zuerst persönlich sprechen?</a>
+    <div class="cta-row part">
+      <div class="cta-main">
+        <a class="btn" href="https://donate.stripe.com/5kQ5kwghd7mm6xAaCFb7y00" target="_blank" rel="noopener">Sponsor werden</a>
+        <a class="cta-alt" href="#kontakt">Lieber zuerst persönlich sprechen
+          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <p class="cta-hint">Ab 10 Franken. Die Zahlung läuft über Stripe, Kartendaten sehe ich nie. Für die Nennung mit Logo melde ich mich danach persönlich.</p>
     </div>
   </section>
 
